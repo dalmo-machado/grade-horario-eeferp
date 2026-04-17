@@ -37,68 +37,144 @@ body {
 }
 
 /* ── HEADER ── */
+/* ── HEADER ── */
 header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 8px 16px;
+  padding: 0 20px;
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: var(--shadow);
+  box-shadow: 0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,0.06);
 }
-.logo {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-.logo span { display: block; font-weight: 300; color: var(--text2); font-size: 10px; letter-spacing: 0.02em; }
-header h1 { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
 
+/* Logo block */
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.logo-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.logo-text { line-height: 1.25; }
+.logo-text strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.logo-text span {
+  display: block;
+  font-size: 10.5px;
+  color: var(--text3);
+  font-weight: 400;
+}
+
+/* App title */
+header h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header h1 span {
+  font-weight: 400;
+  color: var(--text2);
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+/* Controls group */
 .hdr-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
+/* Divider between control groups */
+.hdr-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* Year select */
 select {
   font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 10px;
-  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 28px 6px 12px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface2);
-  color: var(--text);
+  color: var(--accent);
   cursor: pointer;
   outline: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b65' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a6b4a' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 8px center;
-  padding-right: 24px;
+  background-position: right 9px center;
 }
-select:focus { border-color: var(--accent); }
+select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(26,107,74,0.12); }
 
+/* Base button */
 button {
   font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
-  padding: 5px 12px;
-  border-radius: 7px;
+  padding: 6px 13px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface2);
   color: var(--text);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.13s, border-color 0.13s, opacity 0.13s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
-button:hover { background: #eceae5; border-color: rgba(0,0,0,0.14); }
+button:hover:not(:disabled) { background: #eceae5; border-color: rgba(0,0,0,0.15); }
+button:disabled { cursor: default; }
+
+/* Undo button — prominent amber style */
+#undo-btn {
+  background: #fef3e2;
+  color: #7a4200;
+  border-color: #f0c060;
+  font-weight: 600;
+}
+#undo-btn:not(:disabled):hover { background: #fde8b8; border-color: #e0a020; }
+#undo-btn:disabled { background: var(--surface2); color: var(--text3); border-color: var(--border); opacity: 0.5; }
+
+/* Export buttons */
+.btn-pdf { color: #185fa5 !important; border-color: #90c0f0 !important; background: #f0f6ff !important; }
+.btn-pdf:hover:not(:disabled) { background: #ddeeff !important; }
+.btn-docx { color: #1d6b2a !important; border-color: #80cc90 !important; background: #f0faf2 !important; }
+.btn-docx:hover:not(:disabled) { background: #d8f0e0 !important; }
+
 button.danger { color: #8a2a1a; border-color: #f0c4bb; }
 button.danger:hover { background: #fce8e4; }
 
@@ -234,6 +310,17 @@ main { padding: 8px 16px; }
 }
 .block:hover .rm { opacity: 0.6; }
 .block .rm:hover { opacity: 1 !important; }
+.block .dup-btn {
+  position: absolute;
+  top: 3px; right: 20px;
+  font-size: 11px;
+  opacity: 0;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 400;
+}
+.block:hover .dup-btn { opacity: 0.55; }
+.block .dup-btn:hover { opacity: 1 !important; }
 
 .block .rsz {
   position: absolute;
@@ -389,8 +476,16 @@ main { padding: 8px 16px; }
 <body>
 
 <header>
-  <div class="logo">EEFERP<span>USP — Ribeirão Preto</span></div>
-  <h1>Horários — 2º Semestre 2026</h1>
+  <div class="logo-block">
+    <div class="logo-badge">USP</div>
+    <div class="logo-text">
+      <strong>EEFERP</strong>
+      <span>Ribeirão Preto</span>
+    </div>
+  </div>
+
+  <h1>Horários <span>— 2º Semestre 2026</span></h1>
+
   <div class="hdr-controls">
     <select id="yrsel">
       <option value="1">1º Ano</option>
@@ -398,17 +493,28 @@ main { padding: 8px 16px; }
       <option value="3">3º Ano</option>
       <option value="4">4º Ano</option>
     </select>
-    <button onclick="resetYear()">↺ Resetar</button>
-    <button onclick="exportPDF()" style="color:#185fa5;border-color:#b5d4f4;">⬇ PDF</button>
-    <button onclick="exportDOCX()" style="color:#1d6b2a;border-color:#c0dd97;">⬇ DOCX</button>
-    <div style="display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);padding-left:10px;margin-left:2px;">
-      <span style="font-size:11px;color:var(--text3);">Zoom</span>
+
+    <div class="hdr-sep"></div>
+
+    <button onclick="resetYear()" title="Restaurar horário original do ano">↺ Resetar</button>
+    <button id="undo-btn" onclick="undoAction()" title="Desfazer última ação (Ctrl+Z)" disabled>↩ Desfazer</button>
+
+    <div class="hdr-sep"></div>
+
+    <button class="btn-pdf" onclick="exportPDF()" title="Exportar todos os anos em PDF">⬇ PDF</button>
+    <button class="btn-docx" onclick="exportDOCX()" title="Exportar todos os anos em DOCX">⬇ DOCX</button>
+
+    <div class="hdr-sep"></div>
+
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:11.5px;color:var(--text3);font-weight:500;">Zoom</span>
       <input type="range" id="zoom-slider" min="40" max="130" value="72"
-        style="width:72px;accent-color:var(--accent);"
+        style="width:80px;accent-color:var(--accent);cursor:pointer;"
         oninput="onZoomChange(this.value)">
-      <span id="zoom-label" style="font-size:11px;color:var(--text2);min-width:28px;">72%</span>
+      <span id="zoom-label" style="font-size:11.5px;color:var(--text2);min-width:30px;font-weight:500;font-family:'DM Mono',monospace;">72%</span>
     </div>
-    <span id="save-ind" style="font-size:11px;color:#1a6b4a;opacity:0;transition:opacity 0.4s;font-weight:500;">✓ salvo</span>
+
+    <span id="save-ind" style="font-size:11px;color:#1a6b4a;opacity:0;transition:opacity 0.4s;font-weight:600;letter-spacing:0.02em;">✓ salvo</span>
   </div>
 </header>
 
@@ -418,7 +524,7 @@ main { padding: 8px 16px; }
     <div class="sched-grid" id="sched"></div>
   </div>
   <div class="pool-section">
-    <div class="pool-label">Disciplinas disponíveis</div>
+    <div class="pool-label">Paleta de disciplinas <span style="font-size:10px;font-weight:400;color:var(--text3);">— arraste para a grade para adicionar · (N✓) = instâncias na grade</span></div>
     <div class="pool" id="pool"></div>
   </div>
   <div class="info-bar">
@@ -587,6 +693,29 @@ let uid = 0;
 let dragging = null;
 let resizeState = null;
 
+// Undo stack — stores snapshots of placed before each mutation
+const undoStack = [];
+const UNDO_LIMIT = 30;
+
+function pushUndo() {
+  undoStack.push(JSON.stringify({ placed, uid }));
+  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+  const btn = document.getElementById('undo-btn');
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+}
+
+function undoAction() {
+  if (!undoStack.length) return;
+  const snap = JSON.parse(undoStack.pop());
+  placed = snap.placed;
+  uid = snap.uid;
+  saveState();
+  render();
+  toast('Ação desfeita');
+  const btn = document.getElementById('undo-btn');
+  if (btn && !undoStack.length) { btn.disabled = true; btn.style.opacity = '0.4'; }
+}
+
 function newKey(id, d) { return `${id}__${d}__${uid++}`; }
 function blockDef(id) { return YEARS_DATA[curYear].find(b => b.id === id); }
 
@@ -702,7 +831,8 @@ function renderSched() {
       html += `<div class="block" draggable="true" data-key="${key}"
         style="top:${top}px;height:${h}px;left:calc(${L}% + 1px);width:calc(${W}% - 2px);background:${c.bg};color:${c.text};border:1px solid ${c.border}"
         title="${dispName} · ${dispDocente} · ${tlabel}">
-        <span class="rm" onclick="removeBlock('${key}',event)">✕</span>
+        <span class="rm" onclick="removeBlock('${key}',event)" title="Remover">✕</span>
+        <span class="dup-btn" onclick="duplicateBlock('${key}',event)" title="Duplicar bloco">⧉</span>
         <span class="bname">${short}</span>
         <span class="btime">${tlabel}</span>
         <span class="bdocente">${dispDocente}</span>
@@ -718,7 +848,10 @@ function renderSched() {
   // drag events on blocks
   sched.querySelectorAll('.block[draggable]').forEach(el => {
     el.addEventListener('dragstart', e => {
-      dragging = { key: el.dataset.key };
+      // Record where inside the block the user grabbed it
+      const blockRect = el.getBoundingClientRect();
+      const grabOffsetY = e.clientY - blockRect.top;
+      dragging = { key: el.dataset.key, grabOffsetY };
       e.dataTransfer.effectAllowed = 'move';
       setTimeout(() => el.classList.add('dragging'), 0);
     });
@@ -746,6 +879,7 @@ function renderSched() {
       if (fromPool) {
         const b = blockDef(poolId); if (!b) return;
         const dm = snapMin(getDropMin(e, col));
+        pushUndo();
         placed[newKey(poolId, d)] = { id: poolId, d, s: dm, e: dm+60 };
         toast(`${b.name} adicionada`);
         saveState(); render(); return;
@@ -755,6 +889,7 @@ function renderSched() {
       const p = placed[key];
       const dur = p.e - p.s;
       const dm = snapMin(getDropMin(e, col));
+      pushUndo();
       delete placed[key];
       placed[newKey(p.id, d)] = { id: p.id, d, s: dm, e: dm+dur };
       saveState(); render();
@@ -764,9 +899,12 @@ function renderSched() {
 
 function getDropMin(e, col) {
   const rect = col.getBoundingClientRect();
-  return Math.max(0, Math.min(Math.round((e.clientY - rect.top) / PPM), TOTAL_MINS - 30));
+  // Subtract the grab offset so the block top lands where the user aimed
+  const grabOffset = (dragging && dragging.grabOffsetY) ? dragging.grabOffsetY : 0;
+  const rawPx = e.clientY - rect.top - grabOffset;
+  return Math.max(0, Math.min(Math.round(rawPx / PPM), TOTAL_MINS - 30));
 }
-function snapMin(m) { return Math.round(m / 15) * 15; }
+function snapMin(m) { return Math.round(m / 30) * 30; }
 
 // ── RESIZE ────────────────────────────────────────────────
 function startResize(e, key) {
@@ -786,6 +924,7 @@ function doResize(e) {
   renderSched();
 }
 function endResize() {
+  if (resizeState) pushUndo();
   resizeState = null;
   document.removeEventListener('mousemove', doResize);
   document.removeEventListener('mouseup', endResize);
@@ -795,26 +934,31 @@ function endResize() {
 // ── POOL ──────────────────────────────────────────────────
 function renderPool() {
   const pool = document.getElementById('pool');
-  const inGrid = new Set(Object.values(placed).map(p => p.id));
-  const available = YEARS_DATA[curYear].filter(b => !inGrid.has(b.id));
 
-  if (!available.length) {
-    pool.innerHTML = '<span class="pool-empty">Todas as disciplinas estão na grade.</span>';
-  } else {
-    pool.innerHTML = available.map(b => {
-      const c = COLORS[b.type];
-      return `<div class="pblock" draggable="true" data-id="${b.id}"
-        style="background:${c.bg};color:${c.text};border:1px solid ${c.border}"
-        title="${b.name} · ${b.docente}">${b.name}</div>`;
-    }).join('');
-    pool.querySelectorAll('.pblock').forEach(el => {
-      el.addEventListener('dragstart', e => {
-        dragging = { fromPool: true, poolId: el.dataset.id };
-        e.dataTransfer.effectAllowed = 'move';
-      });
-      el.addEventListener('dragend', () => { dragging = null; });
+  // Paleta sempre exibe TODAS as disciplinas do ano.
+  // Cada item mostra quantas instâncias estão na grade (N✓).
+  // Arrastar da paleta → cria nova instância na grade.
+  // Arrastar bloco da grade p/ cá → remove aquela instância.
+  const all = YEARS_DATA[curYear];
+
+  pool.innerHTML = all.map(b => {
+    const c = COLORS[b.type];
+    const count = Object.values(placed).filter(p => p.id === b.id).length;
+    const badge = count > 0
+      ? `<span style="font-size:9px;opacity:0.5;margin-left:4px;">(${count}✓)</span>`
+      : `<span style="font-size:9px;opacity:0.45;margin-left:4px;">(fora)</span>`;
+    return `<div class="pblock" draggable="true" data-id="${b.id}"
+      style="background:${c.bg};color:${c.text};border:1px solid ${c.border};${count===0?'opacity:0.7;':''}"
+      title="${b.name} · ${b.docente}">${b.name}${badge}</div>`;
+  }).join('');
+
+  pool.querySelectorAll('.pblock').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      dragging = { fromPool: true, poolId: el.dataset.id };
+      e.dataTransfer.effectAllowed = 'move';
     });
-  }
+    el.addEventListener('dragend', () => { dragging = null; });
+  });
 
   pool.ondragover = e => { e.preventDefault(); pool.classList.add('drag-over'); };
   pool.ondragleave = () => pool.classList.remove('drag-over');
@@ -822,6 +966,7 @@ function renderPool() {
     e.preventDefault(); pool.classList.remove('drag-over');
     if (dragging && dragging.key && placed[dragging.key]) {
       const b = blockDef(placed[dragging.key].id);
+      pushUndo();
       delete placed[dragging.key];
       toast(`${b ? b.name : 'Disciplina'} removida da grade`);
       saveState(); render();
@@ -832,11 +977,25 @@ function renderPool() {
 // ── ACTIONS ───────────────────────────────────────────────
 function removeBlock(key, e) {
   e.stopPropagation();
+  pushUndo();
   const b = blockDef(placed[key]?.id);
   delete placed[key];
   toast(`${b ? b.name : 'Disciplina'} removida`);
   saveState(); render();
 }
+function duplicateBlock(key, e) {
+  e.stopPropagation();
+  const p = placed[key]; if (!p) return;
+  pushUndo();
+  // Place the duplicate 30 min below, same day
+  const newE = Math.min(TOTAL_MINS, p.e + 30);
+  const newS = newE - (p.e - p.s);
+  const nk = newKey(p.id, p.d);
+  placed[nk] = { ...p, s: newS, e: newE };
+  saveState(); render();
+  toast('Bloco duplicado — arraste para a posição desejada');
+}
+
 function resetYear() {
   initGrid(curYear);
   try { localStorage.removeItem('grade_placed_' + curYear); } catch(e) {}
@@ -1066,6 +1225,7 @@ function saveEditModal() {
   if (!editingKey || !placed[editingKey]) { closeEditModal(); return; }
   const name = document.getElementById('edit-name').value.trim();
   const docente = document.getElementById('edit-docente').value.trim();
+  pushUndo();
   placed[editingKey].nameOverride = name;
   placed[editingKey].docenteOverride = docente;
   saveState();
@@ -1080,10 +1240,14 @@ document.addEventListener('click', e => {
   if (modal && modal.classList.contains('open') && e.target === modal) closeEditModal();
 });
 
-// Save on Enter key
+// Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeEditModal();
   if (e.key === 'Enter' && editingKey) saveEditModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !editingKey) {
+    e.preventDefault();
+    undoAction();
+  }
 });
 
 // ── TOAST ─────────────────────────────────────────────────
