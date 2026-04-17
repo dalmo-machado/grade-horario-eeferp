@@ -1268,12 +1268,19 @@ document.getElementById('yrsel').addEventListener('change', function() {
 });
 
 // ── INIT ──────────────────────────────────────────────────
-// Limpa estados salvos se a versão dos dados mudou
-const DATA_VERSION = 'v3';
+// Seed default state (Dalmo's work) if localStorage is empty or outdated
+const DATA_VERSION = 'v4';
 if (localStorage.getItem('grade_data_version') !== DATA_VERSION) {
-  [1,2,3,4].forEach(y => localStorage.removeItem('grade_placed_' + y));
-  localStorage.removeItem('grade_year');
-  localStorage.removeItem('grade_uid');
+  // First visit or version change: load Dalmo's curated layout as default
+  const DEFAULT_STATE = {
+    grade_placed_1: '{"bioquim__0__0":{"id":"bioquim","d":0,"s":30,"e":150},"socio__1__2":{"id":"socio","d":1,"s":30,"e":150},"socio__3__3":{"id":"socio","d":3,"s":30,"e":150},"efadap__2__4":{"id":"efadap","d":2,"s":30,"e":150},"efadap__4__5":{"id":"efadap","d":4,"s":30,"e":150},"fisio__2__7":{"id":"fisio","d":2,"s":150,"e":270},"pedag__1__8":{"id":"pedag","d":1,"s":150,"e":270,"nameOverride":"Pedagogia da EF e do Esporte I","docenteOverride":"Myrian Nunomura"},"pedag__3__9":{"id":"pedag","d":3,"s":150,"e":270},"fisio__0__26":{"id":"fisio","d":0,"s":150,"e":270},"bioquim__4__28":{"id":"bioquim","d":4,"s":150,"e":270},"anat__1__36":{"id":"anat","d":1,"s":390,"e":510,"nameOverride":"Anatomia Humana II (te\\u00f3rica)","docenteOverride":"(Docente a contratar)"},"anat1__3__41":{"id":"anat1","d":3,"s":390,"e":510,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T1)","docenteOverride":"(Docente a contratar)"},"psoc__4__44":{"id":"psoc","d":4,"s":390,"e":510,"nameOverride":"Primeiros Socorros","docenteOverride":"(Docente a contratar)"},"anat2__3__48":{"id":"anat2","d":3,"s":510,"e":630,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T2)","docenteOverride":"(Docente a contratar)"},"cresc__2__56":{"id":"cresc","d":2,"s":390,"e":570},"bioquim__1__232":{"id":"bioquim","d":1,"s":510,"e":630,"nameOverride":"Bioqu\\u00edmica (2) Metab\\u00f3lica e do Exerc\\u00edcio","docenteOverride":"Tiago Figueira"},"bioquim__0__233":{"id":"bioquim","d":0,"s":510,"e":630}}',
+    grade_placed_2: '{"fisioex__0__0":{"id":"fisioex","d":0,"s":30,"e":150},"espcol__2__3":{"id":"espcol","d":2,"s":30,"e":150},"espcol__4__4":{"id":"espcol","d":4,"s":30,"e":150},"devmot__0__5":{"id":"devmot","d":0,"s":150,"e":270},"devmot__3__6":{"id":"devmot","d":3,"s":150,"e":270},"psico__1__7":{"id":"psico","d":1,"s":150,"e":270},"psico__4__8":{"id":"psico","d":4,"s":390,"e":510},"tutoria__0__11":{"id":"tutoria","d":0,"s":390,"e":510,"nameOverride":"Tutoria Acad\\u00eamica","docenteOverride":"Carlos Bueno Jr."},"bio2__1__12":{"id":"bio2","d":1,"s":390,"e":510},"bio2__3__13":{"id":"bio2","d":3,"s":390,"e":510},"estat__2__14":{"id":"estat","d":2,"s":390,"e":570,"nameOverride":"No\\u00e7\\u00f5es de Estat\\u00edstica","docenteOverride":"(Docente a contratar)"},"saude__2__183":{"id":"saude","d":2,"s":150,"e":270},"treino__1__184":{"id":"treino","d":1,"s":30,"e":150},"saude__4__189":{"id":"saude","d":4,"s":150,"e":270},"treino__3__192":{"id":"treino","d":3,"s":30,"e":150}}',
+    grade_placed_3: '{"idosos2__1__110":{"id":"idosos2","d":1,"s":0,"e":120},"espco1__4__125":{"id":"espco1","d":4,"s":30,"e":150},"idosos2__3__131":{"id":"idosos2","d":3,"s":0,"e":120},"espco1__2__137":{"id":"espco1","d":2,"s":30,"e":150},"est2__0__178":{"id":"est2","d":0,"s":210,"e":270,"nameOverride":"Est\\u00e1gio Supervisionado II","docenteOverride":"(Docente a contratar) / Dalmo"},"espi2__1__213":{"id":"espi2","d":1,"s":510,"e":630},"espi2__3__214":{"id":"espi2","d":3,"s":510,"e":630},"cond1__4__217":{"id":"cond1","d":4,"s":150,"e":270},"cond1__2__218":{"id":"cond1","d":2,"s":150,"e":270},"mono2__3__219":{"id":"mono2","d":3,"s":150,"e":270},"mono2__1__220":{"id":"mono2","d":1,"s":150,"e":270},"infan2__0__224":{"id":"infan2","d":0,"s":90,"e":210},"obeso__1__225":{"id":"obeso","d":1,"s":390,"e":510},"infan2__2__226":{"id":"infan2","d":2,"s":390,"e":510},"obeso__3__227":{"id":"obeso","d":3,"s":390,"e":510}}',
+    grade_placed_4: '{"est4__3__0":{"id":"est4","d":3,"s":90,"e":150,"nameOverride":"Est\\u00e1gio Supervisionado IV","docenteOverride":"(Docente a contratar) / Enrico"},"adult2__1__1":{"id":"adult2","d":1,"s":150,"e":270},"adult2__3__2":{"id":"adult2","d":3,"s":150,"e":270},"jogo__2__3":{"id":"jogo","d":2,"s":150,"e":270},"jogo__4__4":{"id":"jogo","d":4,"s":150,"e":270},"tcc2__1__5":{"id":"tcc2","d":1,"s":390,"e":510},"adol2__1__6":{"id":"adol2","d":1,"s":510,"e":630},"adol2__3__7":{"id":"adol2","d":3,"s":510,"e":630}}',
+    grade_uid: '234',
+    grade_year: '1'
+  };
+  Object.entries(DEFAULT_STATE).forEach(([k, v]) => localStorage.setItem(k, v));
   localStorage.setItem('grade_data_version', DATA_VERSION);
 }
 const savedYear = parseInt(localStorage.getItem('grade_year') || '1');
