@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade de Horários — EEFERP/USP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f2ee;
+  --surface: #ffffff;
+  --surface2: #f8f7f4;
+  --border: rgba(0,0,0,0.09);
+  --border2: rgba(0,0,0,0.06);
+  --text: #1a1a18;
+  --text2: #6b6b65;
+  --text3: #a8a89f;
+  --accent: #1a6b4a;
+  --accent-light: #e8f4ee;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.05);
+
+  --c-obrig-bg: #ddeaf7; --c-obrig-text: #0d4a8a; --c-obrig-border: #5a9fd4;
+  --c-opt-bg: #dff0e0; --c-opt-text: #1d6b2a; --c-opt-border: #5bb86a;
+  --c-optlivre-bg: #fdefd6; --c-optlivre-text: #7a4200; --c-optlivre-border: #e0972a;
+  --c-estagio-bg: #ebe8fb; --c-estagio-text: #3a2a8a; --c-estagio-border: #7c6fd4;
+  --c-mono-bg: #fce8e4; --c-mono-text: #8a2a1a; --c-mono-border: #d4634a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+/* ── HEADER ── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Logo block */
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.logo-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.logo-text { line-height: 1.25; }
+.logo-text strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.logo-text span {
+  display: block;
+  font-size: 10.5px;
+  color: var(--text3);
+  font-weight: 400;
+}
+
+/* App title */
+header h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header h1 span {
+  font-weight: 400;
+  color: var(--text2);
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+/* Controls group */
+.hdr-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Divider between control groups */
+.hdr-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* Year select */
+select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 28px 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--accent);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a6b4a' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+}
+select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(26,107,74,0.12); }
+
+/* Base button */
+button {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.13s, border-color 0.13s, opacity 0.13s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+button:hover:not(:disabled) { background: #eceae5; border-color: rgba(0,0,0,0.15); }
+button:disabled { cursor: default; }
+
+/* Undo button — prominent amber style */
+#undo-btn {
+  background: #fef3e2;
+  color: #7a4200;
+  border-color: #f0c060;
+  font-weight: 600;
+}
+#undo-btn:not(:disabled):hover { background: #fde8b8; border-color: #e0a020; }
+#undo-btn:disabled { background: var(--surface2); color: var(--text3); border-color: var(--border); opacity: 0.5; }
+
+/* Export buttons */
+.btn-pdf { color: #185fa5 !important; border-color: #90c0f0 !important; background: #f0f6ff !important; }
+.btn-pdf:hover:not(:disabled) { background: #ddeeff !important; }
+.btn-docx { color: #1d6b2a !important; border-color: #80cc90 !important; background: #f0faf2 !important; }
+.btn-docx:hover:not(:disabled) { background: #d8f0e0 !important; }
+
+button.danger { color: #8a2a1a; border-color: #f0c4bb; }
+button.danger:hover { background: #fce8e4; }
+
+/* ── MAIN ── */
+main { padding: 8px 16px; }
+
+/* ── LEGEND ── */
+.legend {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--text2);
+}
+.leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── SCHEDULE WRAPPER ── */
+.sched-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+.sched-grid {
+  display: grid;
+  grid-template-columns: 40px repeat(5, 1fr);
+  min-width: 560px;
+}
+
+/* header row */
+.col-hdr {
+  background: var(--surface2);
+  font-weight: 600;
+  color: var(--text2);
+  letter-spacing: 0.03em;
+  padding: 6px 4px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border2);
+  text-transform: uppercase;
+  font-size: 10px;
+}
+.col-hdr:last-child { border-right: none; }
+.col-hdr.time-hdr { color: var(--text3); font-weight: 400; }
+
+/* time column */
+.time-col {
+  position: relative;
+  border-right: 1px solid var(--border);
+  background: var(--surface2);
+}
+.tick-label {
+  position: absolute;
+  left: 0; right: 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px;
+  color: var(--text3);
+  text-align: center;
+  padding-top: 2px;
+  line-height: 1;
+}
+
+/* day columns */
+.day-col {
+  position: relative;
+  border-right: 1px solid var(--border2);
+  transition: background 0.1s;
+}
+.day-col:last-child { border-right: none; }
+.day-col.drag-over { background: rgba(26,107,74,0.05); }
+
+.tick-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 0;
+  border-top: 1px solid var(--border2);
+  pointer-events: none;
+}
+.tick-line.hour { border-top-color: var(--border); }
+
+/* ── BLOCKS ── */
+.block {
+  position: absolute;
+  border-radius: 5px;
+  padding: 2px 5px 8px;
+  font-size: 9px;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  transition: box-shadow 0.15s, opacity 0.12s;
+  z-index: 2;
+}
+.block:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.15); z-index: 10; }
+.block:active { cursor: grabbing; }
+.block.dragging { opacity: 0.35; }
+
+.block .bname { font-size: 11px; font-weight: 600; line-height: 1.3; }
+.block .btime {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  opacity: 0.65;
+  margin-top: 2px;
+}
+.block .bdocente { font-size: 10px; opacity: 0.6; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.block .rm {
+  position: absolute;
+  top: 3px; right: 5px;
+  font-size: 10px;
+  opacity: 0;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 700;
+}
+.block:hover .rm { opacity: 0.6; }
+.block .rm:hover { opacity: 1 !important; }
+.block .dup-btn {
+  position: absolute;
+  top: 3px; right: 20px;
+  font-size: 11px;
+  opacity: 0;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 400;
+}
+.block:hover .dup-btn { opacity: 0.55; }
+.block .dup-btn:hover { opacity: 1 !important; }
+
+.block .rsz {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 8px;
+  cursor: ns-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.block:hover .rsz { opacity: 1; }
+.block .rsz::after {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+/* ── EDIT MODAL ── */
+#edit-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#edit-modal.open { display: flex; }
+#edit-modal .modal-box {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 20px 22px;
+  width: 340px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+#edit-modal .modal-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+#edit-modal label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+#edit-modal input {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+}
+#edit-modal input:focus { border-color: var(--accent); }
+#edit-modal .modal-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+#edit-modal .modal-btns button {
+  font-size: 12px;
+  padding: 6px 14px;
+}
+#edit-modal .btn-save {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+#edit-modal .btn-save:hover { opacity: 0.88; }
+
+/* ── POOL ── */
+.pool-section { margin-top: 10px; }
+.pool-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: background 0.1s, border-color 0.1s;
+}
+.pool.drag-over { background: var(--accent-light); border-color: var(--accent); }
+.pool-empty { font-size: 11px; color: var(--text3); align-self: center; }
+
+.pblock {
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 10.5px;
+  font-weight: 500;
+  cursor: grab;
+  white-space: nowrap;
+  transition: box-shadow 0.12s;
+}
+.pblock:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.pblock:active { cursor: grabbing; }
+
+/* ── INFO ── */
+.info-bar {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: var(--text3);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.info-bar span::before { content: '· '; }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 9px 18px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 999;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-block">
+    <div class="logo-badge">USP</div>
+    <div class="logo-text">
+      <strong>EEFERP</strong>
+      <span>Ribeirão Preto</span>
+    </div>
+  </div>
+
+  <h1>Horários <span>— 2º Semestre 2026</span></h1>
+
+  <div class="hdr-controls">
+    <select id="yrsel">
+      <option value="1">1º Ano</option>
+      <option value="2">2º Ano</option>
+      <option value="3">3º Ano</option>
+      <option value="4">4º Ano</option>
+    </select>
+
+    <div class="hdr-sep"></div>
+
+    <button onclick="resetYear()" title="Restaurar horário original do ano">↺ Resetar</button>
+    <button id="undo-btn" onclick="undoAction()" title="Desfazer última ação (Ctrl+Z)" disabled>↩ Desfazer</button>
+
+    <div class="hdr-sep"></div>
+
+    <button class="btn-pdf" onclick="exportPDF()" title="Exportar todos os anos em PDF">⬇ PDF</button>
+    <button class="btn-docx" onclick="exportDOCX()" title="Exportar todos os anos em DOCX">⬇ DOCX</button>
+
+    <div class="hdr-sep"></div>
+
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:11.5px;color:var(--text3);font-weight:500;">Zoom</span>
+      <input type="range" id="zoom-slider" min="40" max="130" value="72"
+        style="width:80px;accent-color:var(--accent);cursor:pointer;"
+        oninput="onZoomChange(this.value)">
+      <span id="zoom-label" style="font-size:11.5px;color:var(--text2);min-width:30px;font-weight:500;font-family:'DM Mono',monospace;">72%</span>
+    </div>
+
+    <span id="save-ind" style="font-size:11px;color:#1a6b4a;opacity:0;transition:opacity 0.4s;font-weight:600;letter-spacing:0.02em;">✓ salvo</span>
+  </div>
+</header>
+
+<main>
+  <div class="legend" id="legend"></div>
+  <div class="sched-wrap">
+    <div class="sched-grid" id="sched"></div>
+  </div>
+  <div class="pool-section">
+    <div class="pool-label">Paleta de disciplinas <span style="font-size:10px;font-weight:400;color:var(--text3);">— arraste para a grade para adicionar · (N✓) = instâncias na grade</span></div>
+    <div class="pool" id="pool"></div>
+  </div>
+  <div class="info-bar">
+    <span>Arraste blocos para reposicionar</span>
+    <span>Alça inferior para ajustar duração</span>
+    <span>Blocos sobrepostos ficam lado a lado</span>
+    <span>✕ remove da grade</span>
+  </div>
+</main>
+
+<div id="edit-modal">
+  <div class="modal-box">
+    <div class="modal-title">✏ Editar disciplina</div>
+    <div style="font-size:10px;color:var(--text3);margin-bottom:2px;">Dica: dê duplo clique em qualquer bloco para editar</div>
+    <label>Nome da disciplina</label>
+    <input id="edit-name" type="text" placeholder="Nome da disciplina">
+    <label>Docente(s)</label>
+    <input id="edit-docente" type="text" placeholder="Nome do docente">
+    <div class="modal-btns">
+      <button onclick="closeEditModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveEditModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta'];
+const MIN_START = 450, MIN_END = 1080;
+const TOTAL_MINS = MIN_END - MIN_START;
+// PPM: pixels por minuto — controlado pelo slider de zoom
+let _zoomPPM = null; // null = automático
+function calcPPM() {
+  if (_zoomPPM !== null) return _zoomPPM;
+  const avail = window.innerHeight * 0.72;
+  return Math.max(0.5, Math.min(1.0, avail / TOTAL_MINS));
+}
+let PPM = calcPPM();
+
+const COLORS = {
+  obrig:    { bg:'#ddeaf7', text:'#0d4a8a', border:'#5a9fd4' },
+  opt:      { bg:'#dff0e0', text:'#1d6b2a', border:'#5bb86a' },
+  optlivre: { bg:'#fdefd6', text:'#7a4200', border:'#e0972a' },
+  estagio:  { bg:'#ebe8fb', text:'#3a2a8a', border:'#7c6fd4' },
+  mono:     { bg:'#fce8e4', text:'#8a2a1a', border:'#d4634a' },
+};
+const TYPE_LABELS = {
+  obrig:'Obrigatória', opt:'Optativa eletiva',
+  optlivre:'Optativa livre', estagio:'Estágio', mono:'TCC / Monografia'
+};
+
+function tm(h, m=0) { return h*60+m - MIN_START; }
+function px(m) { return Math.round(m * PPM); }
+function fmtH(m) {
+  const a = m + MIN_START, h = Math.floor(a/60), mm = a%60;
+  return mm ? `${h}h${String(mm).padStart(2,'0')}` : `${h}h`;
+}
+
+// ── DATA ──────────────────────────────────────────────────
+// Horários lidos célula a célula do PDF oficial
+const YEARS_DATA = {
+  // 1º ANO
+  // Seg: Bioquím 8-11h | Fisio 10-12h | Anat.teórica 14-16h
+  // Ter: Socio 8-10h | Pedag 10-12h | Cresc 14-16h
+  // Qua: EFAdap 8-10h | Fisio 10-12h | Anat.T1 14-16h | Anat.T2 16-18h
+  // Qui: Socio 8-10h | Pedag 10-12h | PrimSoc 14-16h
+  // Sex: EFAdap 8-10h | Bioquím 11-12h
+  1: [
+    { id:'bioquim', name:'Bioquímica Metabólica e do Exercício', docente:'Tiago Figueira',      type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(11)}, {d:4,s:tm(11),e:tm(12)}] },
+    { id:'socio',   name:'Sociologia da EF e Esporte',           docente:'Renato Marques',      type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)}, {d:3,s:tm(8),e:tm(10)}] },
+    { id:'efadap',  name:'Educação Física Adaptada',             docente:'Márcio Morato',       type:'obrig',
+      slots:[{d:2,s:tm(8),e:tm(10)}, {d:4,s:tm(8),e:tm(10)}] },
+    { id:'fisio',   name:'Fisiologia Geral',                     docente:'Adelino Ramos',       type:'obrig',
+      slots:[{d:0,s:tm(10),e:tm(12)}, {d:2,s:tm(10),e:tm(12)}] },
+    { id:'pedag',   name:'Pedagogia da EF e do Esporte I',       docente:'Myrian Nunomura',     type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)}, {d:3,s:tm(10),e:tm(12)}] },
+    { id:'anat',    name:'Anatomia Humana II (teórica)',         docente:'Leonardo Coelho',     type:'obrig',
+      slots:[{d:0,s:tm(14),e:tm(16)}] },
+    { id:'cresc',   name:'Crescimento e Desenvolvimento Humano', docente:'Dalmo R. L. Machado', type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)}] },
+    { id:'anat1',   name:'Anatomia Humana II (Prática T1)',      docente:'Leonardo Coelho',     type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)}] },
+    { id:'psoc',    name:'Primeiros Socorros',                   docente:'Marcelo Papoti',      type:'obrig',
+      slots:[{d:3,s:tm(14),e:tm(16)}] },
+    { id:'anat2',   name:'Anatomia Humana II (Prática T2)',      docente:'Leonardo Coelho',     type:'obrig',
+      slots:[{d:2,s:tm(16),e:tm(18)}] },
+  ],
+  // 2º ANO
+  // Seg: FisioEx 8-10h | DevMot 10-12h | Tutoria 14-16h
+  // Ter: Saúde 8-10h | Psico 10-12h | Bio2 14-16h
+  // Qua: EspCol 8-10h | Treino 10-12h | Estat 14-16h
+  // Qui: Saúde 8-10h | DevMot 10-12h | Bio2 14-16h
+  // Sex: EspCol 8-10h | Treino 10-12h | Psico 14-16h
+  2: [
+    { id:'fisioex', name:'Fisiologia do Exercício II',           docente:'Adelino Ramos',       type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(10)}] },
+    { id:'saude',   name:'Saúde Coletiva e Atuação Prof. EF',    docente:'Átila Trapé',         type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)}, {d:3,s:tm(8),e:tm(10)}] },
+    { id:'espcol',  name:'Introdução aos Esportes Coletivos',    docente:'Rafael Menezes',      type:'obrig',
+      slots:[{d:2,s:tm(8),e:tm(10)}, {d:4,s:tm(8),e:tm(10)}] },
+    { id:'devmot',  name:'Desenvolvimento Motor',                docente:'Renato de Moraes',    type:'obrig',
+      slots:[{d:0,s:tm(10),e:tm(12)}, {d:3,s:tm(10),e:tm(12)}] },
+    { id:'psico',   name:'Psicologia do Esporte e do Exercício', docente:'Cristiano Barreira',  type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)}, {d:4,s:tm(14),e:tm(16)}] },
+    { id:'treino',  name:'Fundamentos do Treinamento Físico',    docente:'Enrico Puggina',      type:'obrig',
+      slots:[{d:2,s:tm(10),e:tm(12)}, {d:4,s:tm(10),e:tm(12)}] },
+    { id:'tutoria', name:'Tutoria Acadêmica',                    docente:'Carlos Bueno Jr.',    type:'optlivre',
+      slots:[{d:0,s:tm(14),e:tm(16)}] },
+    { id:'bio2',    name:'Biomecânica II',                       docente:'Paulo Santiago',      type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)}, {d:3,s:tm(14),e:tm(16)}] },
+    { id:'estat',   name:'Noções de Estatística',                docente:'Marcelo Papoti',      type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)}] },
+  ],
+  // 3º ANO
+  // Seg: Idosos2 7h30-9h30 + Infância2 8-9h30 (lado a lado) | EspCol 10-12h | Cond.Esp 14-16h
+  // Ter: Idosos2 7h30-9h30 + EspInd2 8-9h30 (lado a lado)   | Obesidade 10-12h | Monografia 14-16h
+  // Qua: Infância2 8-9h30 | EspCol 10-12h | Cond.Esp 14-16h
+  // Qui: EspInd2 8-9h30   | Obesidade 10-12h | Monografia 14-16h
+  // Sex: Estágio2 16-18h
+  3: [
+    { id:'idosos2', name:'Programa de EF para Idosos II',        docente:'Carlos Bueno Júnior', type:'opt',
+      slots:[{d:0,s:tm(7,30),e:tm(9,30)}, {d:1,s:tm(7,30),e:tm(9,30)}] },
+    { id:'infan2',  name:'Programa de EF na Infância II',        docente:'Hugo Tourinho Filho', type:'opt',
+      slots:[{d:0,s:tm(8),e:tm(9,30)}, {d:2,s:tm(8),e:tm(9,30)}] },
+    { id:'espi2',   name:'Programa de Esporte Individual II',    docente:'Enrico Puggina',      type:'optlivre',
+      slots:[{d:1,s:tm(8),e:tm(9,30)}, {d:3,s:tm(8),e:tm(9,30)}] },
+    { id:'espco1',  name:'Programa de Esporte Coletivo I',       docente:'Átila Trapé / P. Santiago', type:'optlivre',
+      slots:[{d:0,s:tm(10),e:tm(12)}, {d:2,s:tm(10),e:tm(12)}] },
+    { id:'obeso',   name:'Exercício Físico e Obesidade',         docente:'Ellen Freitas',       type:'optlivre',
+      slots:[{d:1,s:tm(10),e:tm(12)}, {d:3,s:tm(10),e:tm(12)}] },
+    { id:'cond1',   name:'EF em Condições Especiais de Saúde I', docente:'Camila de Moraes',    type:'obrig',
+      slots:[{d:0,s:tm(14),e:tm(16)}, {d:2,s:tm(14),e:tm(16)}] },
+    { id:'mono2',   name:'Monografia',                           docente:'Ellen Freitas',       type:'mono',
+      slots:[{d:1,s:tm(14),e:tm(16)}, {d:3,s:tm(14),e:tm(16)}] },
+    { id:'est2',    name:'Estágio Supervisionado II',            docente:'Leonardo Coelho',     type:'estagio',
+      slots:[{d:4,s:tm(16),e:tm(18)}] },
+  ],
+  // 4º ANO — lido célula a célula do quadro PDF:
+  // 8h-9h:   vazio em todos os dias
+  // 9h-10h:  só QUINTA tem Estágio Supervisionado IV
+  // 10h-12h: TER=EF Adultos II, QUA=Análise de Jogo, QUI=EF Adultos II, SEX=Análise de Jogo
+  // 12h-14h: vazio
+  // 14h-16h: TER=TCC II
+  // 16h-18h: TER=EF Adolescentes II, QUI=EF Adolescentes II
+  4: [
+    { id:'est4',    name:'Estágio Supervisionado IV',            docente:'Leonardo Lima',       type:'estagio',
+      slots:[{d:3,s:tm(9),e:tm(10)}] },
+    { id:'adult2',  name:'Programa de EF para Adultos II',       docente:'Matheus Gomes',       type:'opt',
+      slots:[{d:1,s:tm(10),e:tm(12)}, {d:3,s:tm(10),e:tm(12)}] },
+    { id:'jogo',    name:'Fundamentos da Análise de Jogo',       docente:'Márcio Morato / R. Menezes', type:'optlivre',
+      slots:[{d:2,s:tm(10),e:tm(12)}, {d:4,s:tm(10),e:tm(12)}] },
+    { id:'tcc2',    name:'Trabalho de Conclusão de Curso II',    docente:'Renato Marques',      type:'mono',
+      slots:[{d:1,s:tm(14),e:tm(16)}] },
+    { id:'adol2',   name:'Programa de EF para Adolescentes II',  docente:'Hugo Tourinho Filho', type:'opt',
+      slots:[{d:1,s:tm(16),e:tm(18)}, {d:3,s:tm(16),e:tm(18)}] },
+  ],
+}
+
+// ── STATE ─────────────────────────────────────────────────
+let curYear = 1;
+let placed = {};   // key → {id, d, s, e}
+let uid = 0;
+let dragging = null;
+let resizeState = null;
+
+// Undo stack — stores snapshots of placed before each mutation
+const undoStack = [];
+const UNDO_LIMIT = 30;
+
+function pushUndo() {
+  undoStack.push(JSON.stringify({ placed, uid }));
+  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+  const btn = document.getElementById('undo-btn');
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+}
+
+function undoAction() {
+  if (!undoStack.length) return;
+  const snap = JSON.parse(undoStack.pop());
+  placed = snap.placed;
+  uid = snap.uid;
+  saveState();
+  render();
+  toast('Ação desfeita');
+  const btn = document.getElementById('undo-btn');
+  if (btn && !undoStack.length) { btn.disabled = true; btn.style.opacity = '0.4'; }
+}
+
+function newKey(id, d) { return `${id}__${d}__${uid++}`; }
+function blockDef(id) { return YEARS_DATA[curYear].find(b => b.id === id); }
+
+// ── PERSISTÊNCIA ──────────────────────────────────────────
+function saveState() {
+  try {
+    localStorage.setItem('grade_year', curYear);
+    localStorage.setItem('grade_uid', uid);
+    localStorage.setItem('grade_placed_' + curYear, JSON.stringify(placed));
+    const ind = document.getElementById('save-ind');
+    if (ind) { ind.style.opacity = '1'; clearTimeout(ind._t); ind._t = setTimeout(() => ind.style.opacity = '0', 1800); }
+  } catch(e) {}
+}
+
+function loadState(y) {
+  try {
+    const raw = localStorage.getItem('grade_placed_' + y);
+    if (!raw) return false;
+    const p = JSON.parse(raw);
+    if (!p || !Object.keys(p).length) return false;
+    placed = p;
+    uid = parseInt(localStorage.getItem('grade_uid') || '0');
+    return true;
+  } catch(e) { return false; }
+}
+
+function initGrid(y) {
+  placed = {}; uid = 0;
+  YEARS_DATA[y].forEach(b => b.slots.forEach(sl => {
+    placed[newKey(b.id, sl.d)] = { id: b.id, d: sl.d, s: sl.s, e: sl.e };
+  }));
+}
+
+// ── LAYOUT ALGORITHM (side-by-side overlap) ──────────────
+function layoutDay(dayEntries) {
+  const sorted = [...dayEntries].sort((a,b) => a.val.s - b.val.s);
+  const colEnds = [];
+  const result = {};
+  sorted.forEach(({ key, val }) => {
+    let c = colEnds.findIndex(e => e <= val.s);
+    if (c === -1) { c = colEnds.length; colEnds.push(val.e); }
+    else colEnds[c] = val.e;
+    result[key] = { col: c };
+  });
+  // per-block: count actual concurrent columns in its time window
+  sorted.forEach(({ key, val }) => {
+    let maxCol = 0;
+    sorted.forEach(({ key: k2, val: v2 }) => {
+      if (v2.s < val.e && v2.e > val.s) maxCol = Math.max(maxCol, result[k2].col + 1);
+    });
+    result[key].total = maxCol;
+  });
+  return result;
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function render() { renderLegend(); renderSched(); renderPool(); }
+
+function renderLegend() {
+  document.getElementById('legend').innerHTML = Object.entries(TYPE_LABELS).map(([k, v]) =>
+    `<div class="leg-item">
+      <div class="leg-dot" style="background:${COLORS[k].bg};border:1.5px solid ${COLORS[k].border}"></div>
+      <span>${v}</span>
+    </div>`
+  ).join('');
+}
+
+function renderSched() {
+  const totalH = px(TOTAL_MINS);
+  const sched = document.getElementById('sched');
+
+  // ticks every 30 min
+  const ticks = [];
+  for (let m = 0; m <= TOTAL_MINS; m += 30) {
+    const abs = m + MIN_START;
+    const isHour = abs % 60 === 0;
+    ticks.push({ m, isHour, label: isHour ? `${Math.floor(abs/60)}h` : null });
+  }
+
+  let html = `<div class="col-hdr time-hdr">—</div>`;
+  DAYS.forEach(d => { html += `<div class="col-hdr">${d}</div>`; });
+
+  // time column
+  html += `<div class="time-col" style="height:${totalH}px">`;
+  ticks.forEach(t => {
+    if (t.label) html += `<div class="tick-label" style="top:${px(t.m)}px">${t.label}</div>`;
+  });
+  html += `</div>`;
+
+  // day columns
+  for (let d = 0; d < 5; d++) {
+    const entries = Object.entries(placed).filter(([,v]) => v.d === d).map(([key,val]) => ({key,val}));
+    const layout = layoutDay(entries);
+
+    html += `<div class="day-col" style="height:${totalH}px" data-day="${d}">`;
+
+    ticks.forEach(t => {
+      html += `<div class="tick-line${t.isHour?' hour':''}" style="top:${px(t.m)}px"></div>`;
+    });
+
+    entries.forEach(({ key, val }) => {
+      const b = blockDef(val.id); if (!b) return;
+      const c = COLORS[b.type];
+      const top = px(val.s);
+      const h = Math.max(px(val.e - val.s), 18);
+      const linfo = layout[key] || { col:0, total:1 };
+      const W = 100 / linfo.total;
+      const L = linfo.col * W;
+      const dispName = val.nameOverride || b.name;
+      const dispDocente = val.docenteOverride !== undefined ? val.docenteOverride : b.docente;
+      const short = dispName.length > 28 ? dispName.slice(0,26)+'…' : dispName;
+      const tlabel = `${fmtH(val.s)} – ${fmtH(val.e)}`;
+      html += `<div class="block" draggable="true" data-key="${key}"
+        style="top:${top}px;height:${h}px;left:calc(${L}% + 1px);width:calc(${W}% - 2px);background:${c.bg};color:${c.text};border:1px solid ${c.border}"
+        title="${dispName} · ${dispDocente} · ${tlabel}">
+        <span class="rm" onclick="removeBlock('${key}',event)" title="Remover">✕</span>
+        <span class="dup-btn" onclick="duplicateBlock('${key}',event)" title="Duplicar bloco">⧉</span>
+        <span class="bname">${short}</span>
+        <span class="btime">${tlabel}</span>
+        <span class="bdocente">${dispDocente}</span>
+        <div class="rsz" onmousedown="startResize(event,'${key}')"></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  sched.innerHTML = html;
+  sched.style.display = 'grid';
+
+  // drag events on blocks
+  sched.querySelectorAll('.block[draggable]').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      // Record where inside the block the user grabbed it
+      const blockRect = el.getBoundingClientRect();
+      const grabOffsetY = e.clientY - blockRect.top;
+      dragging = { key: el.dataset.key, grabOffsetY };
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => el.classList.add('dragging'), 0);
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
+      dragging = null;
+    });
+    // Double-click opens edit modal
+    el.addEventListener('dblclick', e => {
+      e.stopPropagation();
+      openEditModal(el.dataset.key, e);
+    });
+  });
+
+  // drag events on day columns
+  sched.querySelectorAll('.day-col').forEach(col => {
+    const d = parseInt(col.dataset.day);
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+    col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+    col.addEventListener('drop', e => {
+      e.preventDefault(); col.classList.remove('drag-over');
+      if (!dragging) return;
+      const { key, fromPool, poolId } = dragging;
+
+      if (fromPool) {
+        const b = blockDef(poolId); if (!b) return;
+        const dm = snapMin(getDropMin(e, col));
+        pushUndo();
+        placed[newKey(poolId, d)] = { id: poolId, d, s: dm, e: dm+60 };
+        toast(`${b.name} adicionada`);
+        saveState(); render(); return;
+      }
+
+      if (!key || !placed[key]) return;
+      const p = placed[key];
+      const dur = p.e - p.s;
+      const dm = snapMin(getDropMin(e, col));
+      pushUndo();
+      delete placed[key];
+      placed[newKey(p.id, d)] = { id: p.id, d, s: dm, e: dm+dur };
+      saveState(); render();
+    });
+  });
+}
+
+function getDropMin(e, col) {
+  const rect = col.getBoundingClientRect();
+  // Subtract the grab offset so the block top lands where the user aimed
+  const grabOffset = (dragging && dragging.grabOffsetY) ? dragging.grabOffsetY : 0;
+  const rawPx = e.clientY - rect.top - grabOffset;
+  return Math.max(0, Math.min(Math.round(rawPx / PPM), TOTAL_MINS - 30));
+}
+function snapMin(m) { return Math.round(m / 30) * 30; }
+
+// ── RESIZE ────────────────────────────────────────────────
+function startResize(e, key) {
+  e.preventDefault(); e.stopPropagation();
+  const p = placed[key]; if (!p) return;
+  resizeState = { key, startY: e.clientY, origE: p.e };
+  document.addEventListener('mousemove', doResize);
+  document.addEventListener('mouseup', endResize);
+}
+function doResize(e) {
+  if (!resizeState) return;
+  const { key, startY, origE } = resizeState;
+  const p = placed[key]; if (!p) return;
+  const add = Math.round((e.clientY - startY) / PPM / 15) * 15;
+
+  placed[key] = { ...p, e: Math.min(TOTAL_MINS, Math.max(p.s + 30, origE + add)) };
+  renderSched();
+}
+function endResize() {
+  if (resizeState) pushUndo();
+  resizeState = null;
+  document.removeEventListener('mousemove', doResize);
+  document.removeEventListener('mouseup', endResize);
+  saveState();
+}
+
+// ── POOL ──────────────────────────────────────────────────
+function renderPool() {
+  const pool = document.getElementById('pool');
+
+  // Paleta sempre exibe TODAS as disciplinas do ano.
+  // Cada item mostra quantas instâncias estão na grade (N✓).
+  // Arrastar da paleta → cria nova instância na grade.
+  // Arrastar bloco da grade p/ cá → remove aquela instância.
+  const all = YEARS_DATA[curYear];
+
+  pool.innerHTML = all.map(b => {
+    const c = COLORS[b.type];
+    const count = Object.values(placed).filter(p => p.id === b.id).length;
+    const badge = count > 0
+      ? `<span style="font-size:9px;opacity:0.5;margin-left:4px;">(${count}✓)</span>`
+      : `<span style="font-size:9px;opacity:0.45;margin-left:4px;">(fora)</span>`;
+    return `<div class="pblock" draggable="true" data-id="${b.id}"
+      style="background:${c.bg};color:${c.text};border:1px solid ${c.border};${count===0?'opacity:0.7;':''}"
+      title="${b.name} · ${b.docente}">${b.name}${badge}</div>`;
+  }).join('');
+
+  pool.querySelectorAll('.pblock').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      dragging = { fromPool: true, poolId: el.dataset.id };
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    el.addEventListener('dragend', () => { dragging = null; });
+  });
+
+  pool.ondragover = e => { e.preventDefault(); pool.classList.add('drag-over'); };
+  pool.ondragleave = () => pool.classList.remove('drag-over');
+  pool.ondrop = e => {
+    e.preventDefault(); pool.classList.remove('drag-over');
+    if (dragging && dragging.key && placed[dragging.key]) {
+      const b = blockDef(placed[dragging.key].id);
+      pushUndo();
+      delete placed[dragging.key];
+      toast(`${b ? b.name : 'Disciplina'} removida da grade`);
+      saveState(); render();
+    }
+  };
+}
+
+// ── ACTIONS ───────────────────────────────────────────────
+function removeBlock(key, e) {
+  e.stopPropagation();
+  pushUndo();
+  const b = blockDef(placed[key]?.id);
+  delete placed[key];
+  toast(`${b ? b.name : 'Disciplina'} removida`);
+  saveState(); render();
+}
+function duplicateBlock(key, e) {
+  e.stopPropagation();
+  const p = placed[key]; if (!p) return;
+  pushUndo();
+  // Place the duplicate 30 min below, same day
+  const newE = Math.min(TOTAL_MINS, p.e + 30);
+  const newS = newE - (p.e - p.s);
+  const nk = newKey(p.id, p.d);
+  placed[nk] = { ...p, s: newS, e: newE };
+  saveState(); render();
+  toast('Bloco duplicado — arraste para a posição desejada');
+}
+
+function resetYear() {
+  initGrid(curYear);
+  try { localStorage.removeItem('grade_placed_' + curYear); } catch(e) {}
+  saveState();
+  render();
+  toast('Grade resetada para o horário original');
+}
+
+// ── HELPERS DE EXPORT ────────────────────────────────────
+function buildYearTable(y) {
+  let yPlaced = {};
+  if (y === curYear) {
+    yPlaced = placed;
+  } else {
+    try {
+      const raw = localStorage.getItem('grade_placed_' + y);
+      if (raw) yPlaced = JSON.parse(raw);
+    } catch(e) {}
+    if (!Object.keys(yPlaced).length) {
+      let tmpUid = 9000 + y * 100;
+      YEARS_DATA[y].forEach(b => b.slots.forEach(sl => {
+        yPlaced[`${b.id}__${sl.d}__${tmpUid++}`] = { id: b.id, d: sl.d, s: sl.s, e: sl.e };
+      }));
+    }
+  }
+  const DAYS_FULL = ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'];
+  const TICKS = [];
+  for (let m = 0; m <= TOTAL_MINS; m += 60) {
+    const a = m + MIN_START;
+    TICKS.push({ m, label: `${Math.floor(a/60)}h` });
+  }
+  const byDay = Array.from({length:5}, () => []);
+  Object.values(yPlaced).forEach(p => {
+    const b = YEARS_DATA[y].find(x => x.id === p.id); if (!b) return;
+    const name = p.nameOverride !== undefined ? p.nameOverride : b.name;
+    const docente = p.docenteOverride !== undefined ? p.docenteOverride : b.docente;
+    byDay[p.d].push({ ...p, name, docente, type: b.type });
+  });
+  byDay.forEach(arr => arr.sort((a,b) => a.s - b.s));
+  const BGS = { obrig:'#ddeaf7', opt:'#dff0e0', optlivre:'#fdefd6', estagio:'#ebe8fb', mono:'#fce8e4' };
+  const TXT = { obrig:'#0d4a8a', opt:'#1d6b2a', optlivre:'#7a4200', estagio:'#3a2a8a', mono:'#8a2a1a' };
+  let rows = `<tr>
+    <th style="background:#1a6b4a;color:#fff;padding:5px 7px;border:1px solid #888;font-size:9pt;white-space:nowrap;">Horário</th>`;
+  DAYS_FULL.forEach(d => {
+    rows += `<th style="background:#1a6b4a;color:#fff;padding:5px 7px;border:1px solid #888;font-size:9pt;">${d}</th>`;
+  });
+  rows += '</tr>';
+  TICKS.forEach((tick, ti) => {
+    if (ti === TICKS.length - 1) return;
+    const nextTick = TICKS[ti+1];
+    const nextM = nextTick ? nextTick.m : TOTAL_MINS;
+    const rowBg = ti % 2 === 0 ? '#fafafa' : '#f4f2ee';
+    rows += `<tr><td style="background:#f0ede6;padding:3px 5px;border:1px solid #ccc;font-size:8pt;color:#666;text-align:center;white-space:nowrap;">${tick.label}–${nextTick?.label||''}</td>`;
+    for (let d = 0; d < 5; d++) {
+      const cellBlocks = byDay[d].filter(p => p.s < nextM && p.e > tick.m);
+      let cellContent = '';
+      cellBlocks.forEach(p => {
+        const bg = BGS[p.type]||'#eee', tx = TXT[p.type]||'#333';
+        cellContent += `<div style="background:${bg};color:${tx};border:1px solid ${tx}44;border-radius:3px;padding:2px 4px;margin:1px 0;font-size:7.5pt;"><strong>${p.name}</strong><br><span style="font-size:6.5pt;opacity:0.85;">${fmtH(p.s)}–${fmtH(p.e)} · ${p.docente}</span></div>`;
+      });
+      rows += `<td style="background:${cellContent?'#fff':rowBg};padding:2px;border:1px solid #ccc;vertical-align:top;min-width:95px;">${cellContent}</td>`;
+    }
+    rows += '</tr>';
+  });
+  return rows;
+}
+
+// ── EXPORT PDF — captura visual da grade (html2canvas + jsPDF) ──
+function exportPDF() {
+  // Load libraries dynamically if not present
+  function loadScript(src, cb) {
+    if (document.querySelector(`script[src="${src}"]`)) { cb(); return; }
+    const s = document.createElement('script'); s.src = src;
+    s.onload = cb; s.onerror = () => { alert('Erro ao carregar biblioteca: ' + src); };
+    document.head.appendChild(s);
+  }
+
+  toast('Carregando bibliotecas PDF...');
+
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', () => {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', () => {
+      toast('Capturando grades — aguarde...');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const PW = 297, PH = 210, MARGIN = 8;
+
+      const savedYear = curYear;
+      const years = [1, 2, 3, 4];
+      let idx = 0;
+
+      function captureNext() {
+        if (idx >= years.length) {
+          // restore original year
+          curYear = savedYear;
+          document.getElementById('yrsel').value = savedYear;
+          if (!loadState(savedYear)) initGrid(savedYear);
+          render();
+          pdf.save('grade-eeferp-2025-todos-anos.pdf');
+          toast('PDF salvo com os 4 anos!');
+          return;
+        }
+
+        const y = years[idx];
+        // Switch to year y and render
+        curYear = y;
+        document.getElementById('yrsel').value = y;
+        if (!loadState(y)) initGrid(y);
+        render();
+
+        // Wait for render to settle
+        setTimeout(() => {
+          const schedWrap = document.querySelector('.sched-wrap');
+          const header = document.querySelector('header');
+          const legend = document.querySelector('.legend');
+
+          // Build a clean capture container
+          const container = document.createElement('div');
+          container.style.cssText = 'position:fixed;top:0;left:0;width:1200px;background:#fff;z-index:9999;padding:10px 14px;font-family:DM Sans,sans-serif;';
+
+          // Title
+          const title = document.createElement('div');
+          title.style.cssText = 'margin-bottom:6px;';
+          title.innerHTML = `<div style="font-size:14px;font-weight:600;color:#1a6b4a;">EEFERP / USP — Horários — 2º Semestre 2026</div><div style="font-size:12px;color:#444;margin-top:2px;">${y}º Ano</div>`;
+          container.appendChild(title);
+
+          // Legend clone
+          const legClone = legend.cloneNode(true);
+          legClone.style.marginBottom = '8px';
+          container.appendChild(legClone);
+
+          // Schedule clone
+          const schedClone = schedWrap.cloneNode(true);
+          schedClone.style.cssText = 'overflow:visible;border-radius:10px;border:1px solid rgba(0,0,0,0.09);';
+          // Make all day-col and time-col heights explicit
+          const origCols = schedWrap.querySelectorAll('.day-col, .time-col');
+          const cloneCols = schedClone.querySelectorAll('.day-col, .time-col');
+          origCols.forEach((el, i) => {
+            const h = el.getBoundingClientRect().height;
+            if (h > 0) cloneCols[i].style.height = h + 'px';
+          });
+          container.appendChild(schedClone);
+
+          document.body.appendChild(container);
+
+          html2canvas(container, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            width: container.scrollWidth,
+            height: container.scrollHeight,
+            windowWidth: 1220
+          }).then(canvas => {
+            document.body.removeChild(container);
+            const imgData = canvas.toDataURL('image/jpeg', 0.92);
+            const imgW = PW - MARGIN * 2;
+            const imgH = (canvas.height / canvas.width) * imgW;
+            const finalH = Math.min(imgH, PH - MARGIN * 2);
+
+            if (idx > 0) pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', MARGIN, MARGIN, imgW, finalH);
+            idx++;
+            captureNext();
+          }).catch(err => {
+            document.body.removeChild(container);
+            console.error(err);
+            toast('Erro ao capturar ano ' + y);
+            idx++;
+            captureNext();
+          });
+        }, 400);
+      }
+
+      captureNext();
+    });
+  });
+}
+
+// ── EXPORT DOCX — todos os 4 anos num único .doc ──────────
+function exportDOCX() {
+  toast('Gerando DOCX com os 4 anos...');
+  let body = '';
+  [1,2,3,4].forEach((y, idx) => {
+    const pb = idx > 0 ? '<div style="page-break-before:always"></div>' : '';
+    body += `${pb}
+      <h2 style="color:#1a6b4a;font-size:13pt;margin:0 0 2px;font-family:Calibri,sans-serif;">EEFERP / USP — Escola de Educação Física e Esporte de Ribeirão Preto</h2>
+      <h3 style="color:#444;font-size:11pt;margin:0 0 8px;font-family:Calibri,sans-serif;">Horários — 2º Semestre 2026 — ${y}º Ano</h3>
+      <table style="border-collapse:collapse;width:100%;font-family:Calibri,sans-serif;">${buildYearTable(y)}</table>`;
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<xml><w:WordDocument><w:View>Print</w:View><w:Orientation>Landscape</w:Orientation></w:WordDocument></xml>
+<style>body{font-family:Calibri,sans-serif;margin:15mm;}table{border-collapse:collapse;width:100%;}</style>
+</head><body>${body}</body></html>`;
+  const blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'grade-eeferp-2025-todos-anos.doc';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('DOCX baixado — todos os 4 anos!');
+}
+
+// ── EDIT MODAL ───────────────────────────────────────────
+let editingKey = null;
+
+function openEditModal(key, e) {
+  e.stopPropagation();
+  const p = placed[key]; if (!p) return;
+  const b = blockDef(p.id); if (!b) return;
+  editingKey = key;
+  document.getElementById('edit-name').value = p.nameOverride !== undefined ? p.nameOverride : b.name;
+  document.getElementById('edit-docente').value = p.docenteOverride !== undefined ? p.docenteOverride : b.docente;
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(() => document.getElementById('edit-name').select(), 50);
+}
+
+function closeEditModal() {
+  editingKey = null;
+  document.getElementById('edit-modal').classList.remove('open');
+}
+
+function saveEditModal() {
+  if (!editingKey || !placed[editingKey]) { closeEditModal(); return; }
+  const name = document.getElementById('edit-name').value.trim();
+  const docente = document.getElementById('edit-docente').value.trim();
+  pushUndo();
+  placed[editingKey].nameOverride = name;
+  placed[editingKey].docenteOverride = docente;
+  saveState();
+  closeEditModal();
+  render();
+  toast('Bloco atualizado');
+}
+
+// Close modal on backdrop click
+document.addEventListener('click', e => {
+  const modal = document.getElementById('edit-modal');
+  if (modal && modal.classList.contains('open') && e.target === modal) closeEditModal();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeEditModal();
+  if (e.key === 'Enter' && editingKey) saveEditModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !editingKey) {
+    e.preventDefault();
+    undoAction();
+  }
+});
+
+// ── TOAST ─────────────────────────────────────────────────
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ── YEAR SELECT ───────────────────────────────────────────
+document.getElementById('yrsel').addEventListener('change', function() {
+  curYear = parseInt(this.value);
+  if (!loadState(curYear)) initGrid(curYear);
+  render();
+});
+
+// ── INIT ──────────────────────────────────────────────────
+// Limpa estados salvos se a versão dos dados mudou
+const DATA_VERSION = 'v3';
+if (localStorage.getItem('grade_data_version') !== DATA_VERSION) {
+  [1,2,3,4].forEach(y => localStorage.removeItem('grade_placed_' + y));
+  localStorage.removeItem('grade_year');
+  localStorage.removeItem('grade_uid');
+  localStorage.setItem('grade_data_version', DATA_VERSION);
+}
+const savedYear = parseInt(localStorage.getItem('grade_year') || '1');
+curYear = savedYear;
+document.getElementById('yrsel').value = savedYear;
+if (!loadState(savedYear)) initGrid(savedYear);
+render();
+// ── ZOOM SLIDER ──────────────────────────────────────────
+function onZoomChange(val) {
+  const pct = parseInt(val);
+  document.getElementById('zoom-label').textContent = pct + '%';
+  // map percentage to PPM range: 40%→0.42, 100%→1.05
+  _zoomPPM = pct / 100 * 1.05;
+  PPM = _zoomPPM;
+  renderSched();
+}
+// Init slider to match auto PPM on load
+(function initSlider() {
+  const autoPPM = calcPPM();
+  const pct = Math.round(autoPPM / 1.05 * 100);
+  const slider = document.getElementById('zoom-slider');
+  if (slider) { slider.value = pct; document.getElementById('zoom-label').textContent = pct + '%'; }
+})();
+
+window.addEventListener('resize', () => {
+  if (_zoomPPM === null) { PPM = calcPPM(); renderSched(); }
+});
+</script>
+</body>
+</html>
