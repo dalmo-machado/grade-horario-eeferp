@@ -1,0 +1,10 @@
+ATUALIZAR ALTERAÇÕES DO FLUXO
+
+Peça a alteração aqui no chat
+Baixe o index.html gerado e substitua na pasta
+Execute os 3 comandos git no PowerShell
+
+cd "C:\Users\dalmo\OneDrive\EEFERP-Note\Comissão de Graduação\Grade Horário EEFERP\app_horario"
+git add .
+git commit -m "adiciona Metodologia Biomécanica e embute estado v5"
+git push

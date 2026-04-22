@@ -484,9 +484,13 @@ main { padding: 8px 16px; }
     </div>
   </div>
 
-  <h1>Horários <span>— 2º Semestre 2026</span></h1>
+  <h1>Horários <span id="sem-label">— 2º Semestre 2026</span></h1>
 
   <div class="hdr-controls">
+    <select id="semsel">
+      <option value="2s2026">2º Sem 2026</option>
+      <option value="1s2026">1º Sem 2026</option>
+    </select>
     <select id="yrsel">
       <option value="1">1º Ano</option>
       <option value="2">2º Ano</option>
@@ -585,8 +589,11 @@ function fmtH(m) {
 }
 
 // ── DATA ──────────────────────────────────────────────────
-// Horários lidos célula a célula do PDF oficial
-const YEARS_DATA = {
+const SEMESTERS_DATA = {
+// ════════════════════════════════════════════════════════
+// 2º SEMESTRE 2026
+// ════════════════════════════════════════════════════════
+'2s2026': {
   // 1º ANO
   // Seg: Bioquím 8-11h | Fisio 10-12h | Anat.teórica 14-16h
   // Ter: Socio 8-10h | Pedag 10-12h | Cresc 14-16h
@@ -686,9 +693,105 @@ const YEARS_DATA = {
     { id:'adol2',   name:'Programa de EF para Adolescentes II',  docente:'Hugo Tourinho Filho', type:'opt',
       slots:[{d:1,s:tm(16),e:tm(18)}, {d:3,s:tm(16),e:tm(18)}] },
   ],
-}
+}, // end 2s2026
+
+// ════════════════════════════════════════════════════════
+// 1º SEMESTRE 2026
+// ════════════════════════════════════════════════════════
+'1s2026': {
+  // 1º ANO
+  1: [
+    { id:'s1_bioq1',   name:'Bioquímica e Biofísica (T1)',                docente:'Tiago Rezende Figueira',               type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(10)},{d:2,s:tm(8),e:tm(10)}] },
+    { id:'s1_hist',    name:'História da EF e Esporte',                   docente:'Renato Francisco R. Marques',          type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)},{d:3,s:tm(8),e:tm(10)}] },
+    { id:'s1_intef',   name:'Introdução à EF e Esporte',                  docente:'R. F. R. Marques / Matheus Gomes',     type:'obrig',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:2,s:tm(10),e:tm(12)}] },
+    { id:'s1_filos',   name:'Filosofia da EF e Esporte',                  docente:'Cristiano Barreira',                   type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s1_anat0',   name:'Anatomia Humana I (teórica)',                docente:'A definir',                            type:'obrig',
+      slots:[{d:0,s:tm(14),e:tm(16)}] },
+    { id:'s1_pesq',    name:'Introdução à Pesquisa Científica',           docente:'Márcio Pereira Morato',                type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s1_anat1p',  name:'Anatomia Humana I (Prática T1)',             docente:'A definir',                            type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)}] },
+    { id:'s1_bioq2',   name:'Bioquímica e Biofísica (T2)',                docente:'Tiago Rezende Figueira',               type:'obrig',
+      slots:[{d:0,s:tm(16),e:tm(18)},{d:2,s:tm(16),e:tm(18)}] },
+    { id:'s1_biotec',  name:'Biologia Tecidual/Molecular',                docente:'Ellen Cristini de Freitas',            type:'obrig',
+      slots:[{d:1,s:tm(16),e:tm(18)}] },
+    { id:'s1_anat2p',  name:'Anatomia Humana I (Prática T2)',             docente:'A definir',                            type:'obrig',
+      slots:[{d:3,s:tm(16),e:tm(18)}] },
+  ],
+  // 2º ANO
+  2: [
+    { id:'s1_pedag2',  name:'Pedagogia da EF e do Esporte II',            docente:'Rafael Pombo Menezes',                 type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(10)},{d:3,s:tm(8),e:tm(10)}] },
+    { id:'s1_espind',  name:'Introdução aos Esportes Individuais',        docente:'Enrico Puggina / Myrian Nunomura',      type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s1_antrop',  name:'Antropologia da EF e Esporte',               docente:'Cristiano Barreira',                   type:'obrig',
+      slots:[{d:2,s:tm(8),e:tm(10)},{d:4,s:tm(8),e:tm(10)}] },
+    { id:'s1_fisio1',  name:'Fisiologia do Exercício I',                  docente:'Adelino Sanchez Ramos da Silva',       type:'obrig',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:2,s:tm(10),e:tm(12)}] },
+    { id:'s1_nutri',   name:'Nutrição e Exercício',                       docente:'Ellen Cristini de Freitas',            type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s1_ctrl',    name:'Controle Motor',                             docente:'Renato de Moraes',                     type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s1_aqua',    name:'Programa de Esportes Aquáticos',             docente:'Marcelo Papoti',                       type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
+    { id:'s1_bio1',    name:'Biomecânica I',                              docente:'Paulo Roberto P. Santiago',            type:'obrig',
+      slots:[{d:0,s:tm(16),e:tm(18)},{d:4,s:tm(16),e:tm(18)}] },
+  ],
+  // 3º ANO
+  3: [
+    { id:'s1_idosos1', name:'Programas de EF para Idosos I',              docente:'Carlos Bueno Junior',                  type:'opt',
+      slots:[{d:1,s:tm(7,30),e:tm(9,30)},{d:3,s:tm(7,30),e:tm(9,30)}] },
+    { id:'s1_espind1', name:'Programa de Esporte Individual I',           docente:'Myrian Nunomura',                      type:'optlivre',
+      slots:[{d:1,s:tm(9),e:tm(10)},{d:4,s:tm(9),e:tm(10)}] },
+    { id:'s1_medav',   name:'Medidas e Avaliação em EF e Esporte',        docente:'Dalmo Machado',                        type:'obrig',
+      slots:[{d:3,s:tm(9),e:tm(10,30)}] },
+    { id:'s1_treinesp',name:'Programa de Treinamento Esportivo',          docente:'Enrico F. Puggina',                    type:'optlivre',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:2,s:tm(10),e:tm(12)}] },
+    { id:'s1_infan1',  name:'Programas de EF para Infância I',            docente:'Hugo Tourinho Filho',                  type:'opt',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s1_cines',   name:'Cinesiologia Aplicada ao Treinamento',       docente:'Matheus Gomes',                        type:'optlivre',
+      slots:[{d:0,s:tm(14),e:tm(16)}] },
+    { id:'s1_gestao',  name:'Gestão e Marketing na EF e Esporte',         docente:'Átila Trapé',                          type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s1_aprmot',  name:'Aprendizagem Motora',                        docente:'Renato de Moraes',                     type:'obrig',
+      slots:[{d:0,s:tm(16),e:tm(18)},{d:2,s:tm(16),e:tm(18)}] },
+    { id:'s1_est1',    name:'Estágio Supervisionado I',                   docente:'A definir',                            type:'estagio',
+      slots:[{d:1,s:tm(16),e:tm(18)}] },
+  ],
+  // 4º ANO
+  4: [
+    { id:'s1_metbio',  name:'Metodologia Biomecânica p/ Análise do Movimento', docente:'Paulo Santiago',                  type:'optlivre',
+      slots:[{d:0,s:tm(8),e:tm(10)},{d:2,s:tm(8),e:tm(10)}] },
+    { id:'s1_pratesp', name:'Práticas Esportivas em EF e Saúde',          docente:'Marcelo Papoti / Márcio Morato',       type:'optlivre',
+      slots:[{d:1,s:tm(8),e:tm(10)},{d:3,s:tm(8),e:tm(10)}] },
+    { id:'s1_est3',    name:'Estágio Supervisionado III',                 docente:'A definir',                            type:'estagio',
+      slots:[{d:3,s:tm(9),e:tm(10)}] },
+    { id:'s1_espcol2', name:'Programa de Esporte Coletivo II',            docente:'Rafael Pombo Menezes',                 type:'optlivre',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s1_tcc1',    name:'Trabalho de Conclusão de Curso I',           docente:'Dalmo Machado',                        type:'mono',
+      slots:[{d:1,s:tm(10),e:tm(12)}] },
+    { id:'s1_topesp',  name:'Tópicos Especiais em EF e Esporte',          docente:'Átila Trapé',                          type:'optlivre',
+      slots:[{d:2,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s1_adult1',  name:'Programa de EF para Adultos I',              docente:'Camila de Moraes',                     type:'opt',
+      slots:[{d:0,s:tm(14),e:tm(16)},{d:2,s:tm(14),e:tm(16)}] },
+    { id:'s1_adol1',   name:'Programa de EF para Adolescência I',         docente:'Hugo Tourinho Filho',                  type:'opt',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
+    { id:'s1_cond2',   name:'EF em Condições Especiais de Saúde II',      docente:'Camila de Moraes',                     type:'obrig',
+      slots:[{d:0,s:tm(16),e:tm(18)},{d:4,s:tm(16),e:tm(18)}] },
+  ],
+}, // end 1s2026
+}; // end SEMESTERS_DATA
+
+// Compatibility — getYearsData() returns data for current semester
+function getYearsData() { return SEMESTERS_DATA[curSem] || SEMESTERS_DATA['2s2026']; }
+
 
 // ── STATE ─────────────────────────────────────────────────
+let curSem = '2s2026';
 let curYear = 1;
 let placed = {};   // key → {id, d, s, e}
 let uid = 0;
@@ -719,14 +822,14 @@ function undoAction() {
 }
 
 function newKey(id, d) { return `${id}__${d}__${uid++}`; }
-function blockDef(id) { return YEARS_DATA[curYear].find(b => b.id === id); }
+function blockDef(id) { return getYearsData()[curYear].find(b => b.id === id); }
 
 // ── PERSISTÊNCIA ──────────────────────────────────────────
 function saveState() {
   try {
-    localStorage.setItem('grade_year', curYear);
+    localStorage.setItem('grade_year', curYear); localStorage.setItem('grade_sem', curSem);
     localStorage.setItem('grade_uid', uid);
-    localStorage.setItem('grade_placed_' + curYear, JSON.stringify(placed));
+    localStorage.setItem('grade_placed_' + curSem + '_' + curYear, JSON.stringify(placed));
     const ind = document.getElementById('save-ind');
     if (ind) { ind.style.opacity = '1'; clearTimeout(ind._t); ind._t = setTimeout(() => ind.style.opacity = '0', 1800); }
   } catch(e) {}
@@ -734,7 +837,7 @@ function saveState() {
 
 function loadState(y) {
   try {
-    const raw = localStorage.getItem('grade_placed_' + y);
+    const raw = localStorage.getItem('grade_placed_' + curSem + '_' + y);
     if (!raw) return false;
     const p = JSON.parse(raw);
     if (!p || !Object.keys(p).length) return false;
@@ -746,7 +849,7 @@ function loadState(y) {
 
 function initGrid(y) {
   placed = {}; uid = 0;
-  YEARS_DATA[y].forEach(b => b.slots.forEach(sl => {
+  getYearsData()[y].forEach(b => b.slots.forEach(sl => {
     placed[newKey(b.id, sl.d)] = { id: b.id, d: sl.d, s: sl.s, e: sl.e };
   }));
 }
@@ -941,7 +1044,7 @@ function renderPool() {
   // Cada item mostra quantas instâncias estão na grade (N✓).
   // Arrastar da paleta → cria nova instância na grade.
   // Arrastar bloco da grade p/ cá → remove aquela instância.
-  const all = YEARS_DATA[curYear];
+  const all = getYearsData()[curYear];
 
   pool.innerHTML = all.map(b => {
     const c = COLORS[b.type];
@@ -1000,25 +1103,26 @@ function duplicateBlock(key, e) {
 
 function resetYear() {
   initGrid(curYear);
-  try { localStorage.removeItem('grade_placed_' + curYear); } catch(e) {}
+  try { localStorage.removeItem('grade_placed_' + curSem + '_' + curYear); } catch(e) {}
   saveState();
   render();
   toast('Grade resetada para o horário original');
 }
 
 // ── HELPERS DE EXPORT ────────────────────────────────────
-function buildYearTable(y) {
+function buildYearTable(y, buildSem) {
+  buildSem = buildSem || curSem;
   let yPlaced = {};
-  if (y === curYear) {
+  if (y === curYear && buildSem === curSem) {
     yPlaced = placed;
   } else {
     try {
-      const raw = localStorage.getItem('grade_placed_' + y);
+      const raw = localStorage.getItem('grade_placed_' + buildSem + '_' + y);
       if (raw) yPlaced = JSON.parse(raw);
     } catch(e) {}
     if (!Object.keys(yPlaced).length) {
       let tmpUid = 9000 + y * 100;
-      YEARS_DATA[y].forEach(b => b.slots.forEach(sl => {
+      getYearsData()[y].forEach(b => b.slots.forEach(sl => {
         yPlaced[`${b.id}__${sl.d}__${tmpUid++}`] = { id: b.id, d: sl.d, s: sl.s, e: sl.e };
       }));
     }
@@ -1031,7 +1135,7 @@ function buildYearTable(y) {
   }
   const byDay = Array.from({length:5}, () => []);
   Object.values(yPlaced).forEach(p => {
-    const b = YEARS_DATA[y].find(x => x.id === p.id); if (!b) return;
+    const b = getYearsData()[y].find(x => x.id === p.id); if (!b) return;
     const name = p.nameOverride !== undefined ? p.nameOverride : b.name;
     const docente = p.docenteOverride !== undefined ? p.docenteOverride : b.docente;
     byDay[p.d].push({ ...p, name, docente, type: b.type });
@@ -1185,7 +1289,7 @@ function exportDOCX() {
     body += `${pb}
       <h2 style="color:#1a6b4a;font-size:13pt;margin:0 0 2px;font-family:Calibri,sans-serif;">EEFERP / USP — Escola de Educação Física e Esporte de Ribeirão Preto</h2>
       <h3 style="color:#444;font-size:11pt;margin:0 0 8px;font-family:Calibri,sans-serif;">Horários — 2º Semestre 2026 — ${y}º Ano</h3>
-      <table style="border-collapse:collapse;width:100%;font-family:Calibri,sans-serif;">${buildYearTable(y)}</table>`;
+      <table style="border-collapse:collapse;width:100%;font-family:Calibri,sans-serif;">${buildYearTable(y, curSem)}</table>`;
   });
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
     xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -1269,22 +1373,38 @@ document.getElementById('yrsel').addEventListener('change', function() {
   render();
 });
 
+document.getElementById('semsel').addEventListener('change', function() {
+  curSem = this.value;
+  localStorage.setItem('grade_sem', curSem);
+  const semLabels = {'2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+  document.getElementById('sem-label').textContent = semLabels[curSem] || '';
+  curYear = 1;
+  document.getElementById('yrsel').value = 1;
+  if (!loadState(1)) initGrid(1);
+  render();
+});
+
 // ── INIT ──────────────────────────────────────────────────
 // Seed default state (Dalmo's work) if localStorage is empty or outdated
-const DATA_VERSION = 'v5';
+const DATA_VERSION = 'v6';
 if (localStorage.getItem('grade_data_version') !== DATA_VERSION) {
   // First visit or version change: load Dalmo's curated layout as default
   const DEFAULT_STATE = {
-    grade_placed_1: '{"bioquim__0__0":{"id":"bioquim","d":0,"s":30,"e":150},"socio__1__2":{"id":"socio","d":1,"s":30,"e":150},"socio__3__3":{"id":"socio","d":3,"s":30,"e":150},"efadap__2__4":{"id":"efadap","d":2,"s":30,"e":150},"efadap__4__5":{"id":"efadap","d":4,"s":30,"e":150},"fisio__2__7":{"id":"fisio","d":2,"s":150,"e":270},"pedag__1__8":{"id":"pedag","d":1,"s":150,"e":270,"nameOverride":"Pedagogia da EF e do Esporte I","docenteOverride":"Myrian Nunomura"},"pedag__3__9":{"id":"pedag","d":3,"s":150,"e":270},"fisio__0__26":{"id":"fisio","d":0,"s":150,"e":270},"bioquim__4__28":{"id":"bioquim","d":4,"s":150,"e":270},"anat__1__36":{"id":"anat","d":1,"s":390,"e":510,"nameOverride":"Anatomia Humana II (te\\u00f3rica)","docenteOverride":"(Docente a contratar)"},"anat1__3__41":{"id":"anat1","d":3,"s":390,"e":510,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T1)","docenteOverride":"(Docente a contratar)"},"anat2__3__48":{"id":"anat2","d":3,"s":510,"e":630,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T2)","docenteOverride":"(Docente a contratar)"},"cresc__2__56":{"id":"cresc","d":2,"s":390,"e":570},"bioquim__1__232":{"id":"bioquim","d":1,"s":510,"e":630,"nameOverride":"Bioqu\\u00edmica (T2) Metab\\u00f3lica e do Exerc\\u00edcio","docenteOverride":"Tiago Figueira"},"bioquim__0__233":{"id":"bioquim","d":0,"s":510,"e":630,"nameOverride":"Bioqu\\u00edmica (T2) Metab\\u00f3lica e do Exerc\\u00edcio","docenteOverride":"Tiago Figueira"},"psoc__4__239":{"id":"psoc","d":4,"s":390,"e":510}}',
-    grade_placed_2: '{"fisioex__0__0":{"id":"fisioex","d":0,"s":30,"e":150},"espcol__2__3":{"id":"espcol","d":2,"s":30,"e":150},"espcol__4__4":{"id":"espcol","d":4,"s":30,"e":150},"devmot__0__5":{"id":"devmot","d":0,"s":150,"e":270},"devmot__3__6":{"id":"devmot","d":3,"s":150,"e":270},"psico__1__7":{"id":"psico","d":1,"s":150,"e":270},"psico__4__8":{"id":"psico","d":4,"s":390,"e":510},"tutoria__0__11":{"id":"tutoria","d":0,"s":390,"e":510,"nameOverride":"Tutoria Acad\\u00eamica","docenteOverride":"Carlos Bueno Jr."},"bio2__1__12":{"id":"bio2","d":1,"s":390,"e":510},"bio2__3__13":{"id":"bio2","d":3,"s":390,"e":510},"estat__2__14":{"id":"estat","d":2,"s":390,"e":570,"nameOverride":"No\\u00e7\\u00f5es de Estat\\u00edstica","docenteOverride":"(Docente a contratar)"},"saude__2__183":{"id":"saude","d":2,"s":150,"e":270},"treino__1__184":{"id":"treino","d":1,"s":30,"e":150},"saude__4__189":{"id":"saude","d":4,"s":150,"e":270},"treino__3__192":{"id":"treino","d":3,"s":30,"e":150}}',
-    grade_placed_3: '{"idosos2__1__110":{"id":"idosos2","d":1,"s":0,"e":120},"espco1__4__125":{"id":"espco1","d":4,"s":30,"e":150},"idosos2__3__131":{"id":"idosos2","d":3,"s":0,"e":120},"espco1__2__137":{"id":"espco1","d":2,"s":30,"e":150},"est2__0__178":{"id":"est2","d":0,"s":210,"e":270,"nameOverride":"Est\\u00e1gio Supervisionado II","docenteOverride":"(Docente a contratar) / Dalmo"},"espi2__1__213":{"id":"espi2","d":1,"s":510,"e":630},"espi2__3__214":{"id":"espi2","d":3,"s":510,"e":630},"cond1__4__217":{"id":"cond1","d":4,"s":150,"e":270},"cond1__2__218":{"id":"cond1","d":2,"s":150,"e":270},"mono2__3__219":{"id":"mono2","d":3,"s":150,"e":270},"mono2__1__220":{"id":"mono2","d":1,"s":150,"e":270},"infan2__0__224":{"id":"infan2","d":0,"s":90,"e":210},"obeso__1__225":{"id":"obeso","d":1,"s":390,"e":510,"nameOverride":"Exerc\\u00edcio F\\u00edsico e Obesidade","docenteOverride":"Ellen Freitas"},"infan2__2__226":{"id":"infan2","d":2,"s":390,"e":510},"obeso__3__227":{"id":"obeso","d":3,"s":390,"e":510,"nameOverride":"Exerc\\u00edcio F\\u00edsico e Obesidade","docenteOverride":"Ellen Freitas"},"biom163__0__235":{"id":"biom163","d":0,"s":390,"e":510},"biom163__4__237":{"id":"biom163","d":4,"s":390,"e":510}}',
-    grade_placed_4: '{"est4__3__0":{"id":"est4","d":3,"s":90,"e":150,"nameOverride":"Est\\u00e1gio Supervisionado IV","docenteOverride":"(Docente a contratar) / Enrico"},"adult2__1__1":{"id":"adult2","d":1,"s":150,"e":270},"adult2__3__2":{"id":"adult2","d":3,"s":150,"e":270},"jogo__2__3":{"id":"jogo","d":2,"s":150,"e":270},"jogo__4__4":{"id":"jogo","d":4,"s":150,"e":270},"tcc2__1__5":{"id":"tcc2","d":1,"s":390,"e":510},"adol2__1__6":{"id":"adol2","d":1,"s":510,"e":630},"adol2__3__7":{"id":"adol2","d":3,"s":510,"e":630}}',
+    grade_placed_2s2026_1: '{"bioquim__0__0":{"id":"bioquim","d":0,"s":30,"e":150},"socio__1__2":{"id":"socio","d":1,"s":30,"e":150},"socio__3__3":{"id":"socio","d":3,"s":30,"e":150},"efadap__2__4":{"id":"efadap","d":2,"s":30,"e":150},"efadap__4__5":{"id":"efadap","d":4,"s":30,"e":150},"fisio__2__7":{"id":"fisio","d":2,"s":150,"e":270},"pedag__1__8":{"id":"pedag","d":1,"s":150,"e":270,"nameOverride":"Pedagogia da EF e do Esporte I","docenteOverride":"Myrian Nunomura"},"pedag__3__9":{"id":"pedag","d":3,"s":150,"e":270},"fisio__0__26":{"id":"fisio","d":0,"s":150,"e":270},"bioquim__4__28":{"id":"bioquim","d":4,"s":150,"e":270},"anat__1__36":{"id":"anat","d":1,"s":390,"e":510,"nameOverride":"Anatomia Humana II (te\\u00f3rica)","docenteOverride":"(Docente a contratar)"},"anat1__3__41":{"id":"anat1","d":3,"s":390,"e":510,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T1)","docenteOverride":"(Docente a contratar)"},"anat2__3__48":{"id":"anat2","d":3,"s":510,"e":630,"nameOverride":"Anatomia Humana II (Pr\\u00e1tica T2)","docenteOverride":"(Docente a contratar)"},"cresc__2__56":{"id":"cresc","d":2,"s":390,"e":570},"bioquim__1__232":{"id":"bioquim","d":1,"s":510,"e":630,"nameOverride":"Bioqu\\u00edmica (T2) Metab\\u00f3lica e do Exerc\\u00edcio","docenteOverride":"Tiago Figueira"},"bioquim__0__233":{"id":"bioquim","d":0,"s":510,"e":630,"nameOverride":"Bioqu\\u00edmica (T2) Metab\\u00f3lica e do Exerc\\u00edcio","docenteOverride":"Tiago Figueira"},"psoc__4__239":{"id":"psoc","d":4,"s":390,"e":510}}',
+    grade_placed_2s2026_2: '{"fisioex__0__0":{"id":"fisioex","d":0,"s":30,"e":150},"espcol__2__3":{"id":"espcol","d":2,"s":30,"e":150},"espcol__4__4":{"id":"espcol","d":4,"s":30,"e":150},"devmot__0__5":{"id":"devmot","d":0,"s":150,"e":270},"devmot__3__6":{"id":"devmot","d":3,"s":150,"e":270},"psico__1__7":{"id":"psico","d":1,"s":150,"e":270},"psico__4__8":{"id":"psico","d":4,"s":390,"e":510},"tutoria__0__11":{"id":"tutoria","d":0,"s":390,"e":510,"nameOverride":"Tutoria Acad\\u00eamica","docenteOverride":"Carlos Bueno Jr."},"bio2__1__12":{"id":"bio2","d":1,"s":390,"e":510},"bio2__3__13":{"id":"bio2","d":3,"s":390,"e":510},"estat__2__14":{"id":"estat","d":2,"s":390,"e":570,"nameOverride":"No\\u00e7\\u00f5es de Estat\\u00edstica","docenteOverride":"(Docente a contratar)"},"saude__2__183":{"id":"saude","d":2,"s":150,"e":270},"treino__1__184":{"id":"treino","d":1,"s":30,"e":150},"saude__4__189":{"id":"saude","d":4,"s":150,"e":270},"treino__3__192":{"id":"treino","d":3,"s":30,"e":150}}',
+    grade_placed_2s2026_3: '{"idosos2__1__110":{"id":"idosos2","d":1,"s":0,"e":120},"espco1__4__125":{"id":"espco1","d":4,"s":30,"e":150},"idosos2__3__131":{"id":"idosos2","d":3,"s":0,"e":120},"espco1__2__137":{"id":"espco1","d":2,"s":30,"e":150},"est2__0__178":{"id":"est2","d":0,"s":210,"e":270,"nameOverride":"Est\\u00e1gio Supervisionado II","docenteOverride":"(Docente a contratar) / Dalmo"},"espi2__1__213":{"id":"espi2","d":1,"s":510,"e":630},"espi2__3__214":{"id":"espi2","d":3,"s":510,"e":630},"cond1__4__217":{"id":"cond1","d":4,"s":150,"e":270},"cond1__2__218":{"id":"cond1","d":2,"s":150,"e":270},"mono2__3__219":{"id":"mono2","d":3,"s":150,"e":270},"mono2__1__220":{"id":"mono2","d":1,"s":150,"e":270},"infan2__0__224":{"id":"infan2","d":0,"s":90,"e":210},"obeso__1__225":{"id":"obeso","d":1,"s":390,"e":510,"nameOverride":"Exerc\\u00edcio F\\u00edsico e Obesidade","docenteOverride":"Ellen Freitas"},"infan2__2__226":{"id":"infan2","d":2,"s":390,"e":510},"obeso__3__227":{"id":"obeso","d":3,"s":390,"e":510,"nameOverride":"Exerc\\u00edcio F\\u00edsico e Obesidade","docenteOverride":"Ellen Freitas"},"biom163__0__235":{"id":"biom163","d":0,"s":390,"e":510},"biom163__4__237":{"id":"biom163","d":4,"s":390,"e":510}}',
+    grade_placed_2s2026_4: '{"est4__3__0":{"id":"est4","d":3,"s":90,"e":150,"nameOverride":"Est\\u00e1gio Supervisionado IV","docenteOverride":"(Docente a contratar) / Enrico"},"adult2__1__1":{"id":"adult2","d":1,"s":150,"e":270},"adult2__3__2":{"id":"adult2","d":3,"s":150,"e":270},"jogo__2__3":{"id":"jogo","d":2,"s":150,"e":270},"jogo__4__4":{"id":"jogo","d":4,"s":150,"e":270},"tcc2__1__5":{"id":"tcc2","d":1,"s":390,"e":510},"adol2__1__6":{"id":"adol2","d":1,"s":510,"e":630},"adol2__3__7":{"id":"adol2","d":3,"s":510,"e":630}}',
     grade_uid: '240',
-    grade_year: '1'
+    grade_year: '1',
+    grade_sem: '2s2026'
   };
   Object.entries(DEFAULT_STATE).forEach(([k, v]) => localStorage.setItem(k, v));
   localStorage.setItem('grade_data_version', DATA_VERSION);
 }
+curSem = localStorage.getItem('grade_sem') || '2s2026';
+document.getElementById('semsel').value = curSem;
+const semLabels = {'2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+document.getElementById('sem-label').textContent = semLabels[curSem] || '';
 const savedYear = parseInt(localStorage.getItem('grade_year') || '1');
 curYear = savedYear;
 document.getElementById('yrsel').value = savedYear;
