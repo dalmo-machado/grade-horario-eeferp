@@ -488,6 +488,7 @@ main { padding: 8px 16px; }
 
   <div class="hdr-controls">
     <select id="semsel">
+      <option value="1s2027">1º Sem 2027 (proposta v2)</option>
       <option value="2s2026">2º Sem 2026</option>
       <option value="1s2026">1º Sem 2026</option>
     </select>
@@ -784,6 +785,96 @@ const SEMESTERS_DATA = {
       slots:[{d:0,s:tm(16),e:tm(18)},{d:4,s:tm(16),e:tm(18)}] },
   ],
 }, // end 1s2026
+
+// ════════════════════════════════════════════════════════
+// 1º SEMESTRE 2027 — PROPOSTA v2 (12/10/2026), após consulta aos docentes
+// ════════════════════════════════════════════════════════
+'1s2027': {
+  // 1º ANO
+  1: [
+    { id:'s7_bioq1', name:'Bioquímica e Biofísica (T1)', docente:'Tiago Rezende Figueira', type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(10)},{d:2,s:tm(8),e:tm(10)}] },
+    { id:'s7_hist', name:'História da EF e Esporte', docente:'Renato Francisco R. Marques', type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)},{d:3,s:tm(8),e:tm(10)}] },
+    { id:'s7_intef', name:'Introdução à EF e Esporte', docente:'R. F. R. Marques / Matheus Gomes', type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s7_filos', name:'Filosofia da EF e Esporte', docente:'Cristiano Barreira', type:'obrig',
+      slots:[{d:2,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s7_anat0', name:'Anatomia Humana I (teórica)', docente:'Renata Acunha (substituta)', type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)}] },
+    { id:'s7_pesq', name:'Introdução à Pesquisa Científica', docente:'Márcio Pereira Morato', type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
+    { id:'s7_anat1p', name:'Anatomia Humana I (Prática T1)', docente:'Renata Acunha (substituta)', type:'obrig',
+      slots:[{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s7_bioq2', name:'Bioquímica e Biofísica (T2)', docente:'Tiago Rezende Figueira', type:'obrig',
+      slots:[{d:0,s:tm(16),e:tm(18)},{d:2,s:tm(16),e:tm(18)}] },
+    { id:'s7_biotec', name:'Biologia Tecidual/Molecular', docente:'Ellen Cristini de Freitas', type:'obrig',
+      slots:[{d:1,s:tm(16),e:tm(18)}] },
+    { id:'s7_anat2p', name:'Anatomia Humana I (Prática T2)', docente:'Renata Acunha (substituta)', type:'obrig',
+      slots:[{d:3,s:tm(16),e:tm(18)}] },
+  ],
+  // 2º ANO
+  2: [
+    { id:'s7_pedag2', name:'Pedagogia da EF e do Esporte II', docente:'Rafael Pombo Menezes', type:'obrig',
+      slots:[{d:0,s:tm(8),e:tm(10)},{d:3,s:tm(8),e:tm(10)}] },
+    { id:'s7_espind', name:'Introdução aos Esportes Individuais', docente:'Enrico Puggina / Myrian Nunomura', type:'obrig',
+      slots:[{d:1,s:tm(8),e:tm(10)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s7_antrop', name:'Antropologia da EF e Esporte', docente:'Cristiano Barreira', type:'obrig',
+      slots:[{d:2,s:tm(8),e:tm(10)},{d:4,s:tm(8),e:tm(10)}] },
+    { id:'s7_fisio1', name:'Fisiologia do Exercício I', docente:'Adelino Sanchez Ramos da Silva', type:'obrig',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:2,s:tm(10),e:tm(12)}] },
+    { id:'s7_nutri', name:'Nutrição e Exercício', docente:'Ellen Cristini de Freitas', type:'obrig',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s7_bio1', name:'Biomecânica I', docente:'Paulo Roberto P. Santiago', type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s7_aqua', name:'Programa de Esportes Aquáticos', docente:'Arthur Zecchin (substituto)', type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
+    { id:'s7_ctrl', name:'Controle Motor', docente:'Renato de Moraes', type:'obrig',
+      slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
+  ],
+  // 3º ANO
+  3: [
+    { id:'s7_idosos1', name:'Programas de EF para Idosos I', docente:'Carlos Bueno Junior', type:'opt',
+      slots:[{d:1,s:tm(7,30),e:tm(9,30)},{d:3,s:tm(7,30),e:tm(9,30)}] },
+    { id:'s7_medav', name:'Medidas e Avaliação em EF e Esporte', docente:'Dalmo Machado', type:'obrig',
+      slots:[{d:0,s:tm(9),e:tm(12)}] },
+    { id:'s7_espind1', name:'Programa de Esporte Individual I', docente:'Myrian Nunomura', type:'optlivre',
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s7_cines', name:'Cinesiologia Aplicada ao Treinamento', docente:'Matheus Gomes', type:'optlivre',
+      slots:[{d:2,s:tm(8),e:tm(10)},{d:4,s:tm(8),e:tm(10)}] },
+    { id:'s7_infan1', name:'Programas de EF para Infância I', docente:'Hugo Tourinho Filho', type:'opt',
+      slots:[{d:2,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s7_aprmot', name:'Aprendizagem Motora', docente:'Renato de Moraes', type:'obrig',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s7_gestao', name:'Gestão e Marketing na EF e Esporte', docente:'Átila Trapé', type:'obrig',
+      slots:[{d:2,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
+    { id:'s7_treinesp', name:'Programa de Treinamento Esportivo', docente:'Enrico F. Puggina', type:'optlivre',
+      slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
+    { id:'s7_est1', name:'Estágio Supervisionado I', docente:'Renata Acunha', type:'estagio',
+      slots:[{d:2,s:tm(16),e:tm(18)}] },
+  ],
+  // 4º ANO
+  4: [
+    { id:'s7_est3', name:'Estágio Supervisionado III', docente:'Renata Acunha', type:'estagio',
+      slots:[{d:1,s:tm(9),e:tm(10)}] },
+    { id:'s7_espcol2', name:'Programa de Esporte Coletivo II', docente:'Rafael Pombo Menezes', type:'optlivre',
+      slots:[{d:0,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
+    { id:'s7_tcc1', name:'Trabalho de Conclusão de Curso I', docente:'Dalmo Machado', type:'mono',
+      slots:[{d:1,s:tm(10),e:tm(12)}] },
+    { id:'s7_pratesp', name:'Práticas Esportivas em EF e Saúde', docente:'Márcio Pereira Morato', type:'optlivre',
+      slots:[{d:2,s:tm(8),e:tm(10)},{d:4,s:tm(8),e:tm(10)}] },
+    { id:'s7_topesp', name:'Tópicos Especiais em EF e Esporte', docente:'Átila Trapé', type:'optlivre',
+      slots:[{d:2,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
+    { id:'s7_adult1', name:'Programa de EF para Adultos I', docente:'Camila de Moraes', type:'opt',
+      slots:[{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}] },
+    { id:'s7_adol1', name:'Programa de EF para Adolescência I', docente:'Hugo Tourinho Filho', type:'opt',
+      slots:[{d:2,s:tm(14),e:tm(18)}] },
+    { id:'s7_cond2', name:'EF em Condições Especiais de Saúde II', docente:'Camila de Moraes', type:'obrig',
+      slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
+    { id:'s7_metbio', name:'Metodologia Biomecânica p/ Análise do Movimento', docente:'Paulo Santiago', type:'optlivre',
+      slots:[{d:4,s:tm(14),e:tm(18)}] },
+  ],
+}, // end 1s2027
 }; // end SEMESTERS_DATA
 
 // Compatibility — getYearsData() returns data for current semester
@@ -1376,7 +1467,7 @@ document.getElementById('yrsel').addEventListener('change', function() {
 document.getElementById('semsel').addEventListener('change', function() {
   curSem = this.value;
   localStorage.setItem('grade_sem', curSem);
-  const semLabels = {'2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+  const semLabels = {'1s2027':'— 1º Semestre 2027 (proposta v2)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
   document.getElementById('sem-label').textContent = semLabels[curSem] || '';
   curYear = 1;
   document.getElementById('yrsel').value = 1;
@@ -1403,7 +1494,7 @@ if (localStorage.getItem('grade_data_version') !== DATA_VERSION) {
 }
 curSem = localStorage.getItem('grade_sem') || '2s2026';
 document.getElementById('semsel').value = curSem;
-const semLabels = {'2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+const semLabels = {'1s2027':'— 1º Semestre 2027 (proposta v2)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
 document.getElementById('sem-label').textContent = semLabels[curSem] || '';
 const savedYear = parseInt(localStorage.getItem('grade_year') || '1');
 curYear = savedYear;
