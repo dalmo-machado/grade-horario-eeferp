@@ -488,7 +488,8 @@ main { padding: 8px 16px; }
 
   <div class="hdr-controls">
     <select id="semsel">
-      <option value="1s2027">1º Sem 2027 (proposta v2)</option>
+      <option value="1s2027alt">1º Sem 2027 (v4 – final)</option>
+      <option value="1s2027">1º Sem 2027 (v2 – superada)</option>
       <option value="2s2026">2º Sem 2026</option>
       <option value="1s2026">1º Sem 2026</option>
     </select>
@@ -839,9 +840,9 @@ const SEMESTERS_DATA = {
     { id:'s7_medav', name:'Medidas e Avaliação em EF e Esporte', docente:'Dalmo Machado', type:'obrig',
       slots:[{d:0,s:tm(9),e:tm(12)}] },
     { id:'s7_espind1', name:'Programa de Esporte Individual I', docente:'Myrian Nunomura', type:'optlivre',
-      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
-    { id:'s7_cines', name:'Cinesiologia Aplicada ao Treinamento', docente:'Matheus Gomes', type:'optlivre',
       slots:[{d:2,s:tm(8),e:tm(10)},{d:4,s:tm(8),e:tm(10)}] },
+    { id:'s7_cines', name:'Cinesiologia Aplicada ao Treinamento', docente:'Matheus Gomes', type:'optlivre',
+      slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
     { id:'s7_infan1', name:'Programas de EF para Infância I', docente:'Hugo Tourinho Filho', type:'opt',
       slots:[{d:2,s:tm(10),e:tm(12)},{d:4,s:tm(10),e:tm(12)}] },
     { id:'s7_aprmot', name:'Aprendizagem Motora', docente:'Renato de Moraes', type:'obrig',
@@ -849,7 +850,7 @@ const SEMESTERS_DATA = {
     { id:'s7_gestao', name:'Gestão e Marketing na EF e Esporte', docente:'Átila Trapé', type:'obrig',
       slots:[{d:2,s:tm(14),e:tm(16)},{d:4,s:tm(14),e:tm(16)}] },
     { id:'s7_treinesp', name:'Programa de Treinamento Esportivo', docente:'Enrico F. Puggina', type:'optlivre',
-      slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
+      slots:[{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}] },
     { id:'s7_est1', name:'Estágio Supervisionado I', docente:'Renata Acunha', type:'estagio',
       slots:[{d:2,s:tm(16),e:tm(18)}] },
   ],
@@ -872,17 +873,34 @@ const SEMESTERS_DATA = {
     { id:'s7_cond2', name:'EF em Condições Especiais de Saúde II', docente:'Camila de Moraes', type:'obrig',
       slots:[{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}] },
     { id:'s7_metbio', name:'Metodologia Biomecânica p/ Análise do Movimento', docente:'Paulo Santiago', type:'optlivre',
-      slots:[{d:0,s:tm(14),e:tm(18)}] },
+      slots:[{d:3,s:tm(8),e:tm(12)}] },
   ],
 }, // end 1s2027
 }; // end SEMESTERS_DATA
+
+// 1º SEMESTRE 2027 — VERSÃO 4 (13/10/2026)
+// 2º ano: Controle Motor ter/qui 14–16h; Biomecânica I ter/qui 16–18h
+// 3º ano: PTE seg 7h30–9h30 e sex 8–10h; Medidas seg 9h30–12h30; PEI I ter/qui 10–12h; Cinesiologia ter/qui 14–16h; Aprendizagem ter/qui 16–18h; Estágio I qua 8–10h
+SEMESTERS_DATA['1s2027alt'] = JSON.parse(JSON.stringify(SEMESTERS_DATA['1s2027']));
+(function(){
+  const S = SEMESTERS_DATA['1s2027alt'];
+  const set = (y, id, sl) => { const c = S[y].find(x => x.id === id); if (c) c.slots = sl; };
+  set(2, 's7_ctrl', [{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}]);
+  set(2, 's7_bio1', [{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}]);
+  set(3, 's7_treinesp', [{d:0,s:tm(7,30),e:tm(9,30)},{d:4,s:tm(8),e:tm(10)}]);
+  set(3, 's7_medav', [{d:0,s:tm(9,30),e:tm(12,30)}]);
+  set(3, 's7_espind1', [{d:1,s:tm(10),e:tm(12)},{d:3,s:tm(10),e:tm(12)}]);
+  set(3, 's7_cines', [{d:1,s:tm(14),e:tm(16)},{d:3,s:tm(14),e:tm(16)}]);
+  set(3, 's7_aprmot', [{d:1,s:tm(16),e:tm(18)},{d:3,s:tm(16),e:tm(18)}]);
+  set(3, 's7_est1', [{d:2,s:tm(8),e:tm(10)}]);
+})();
 
 // Compatibility — getYearsData() returns data for current semester
 function getYearsData() { return SEMESTERS_DATA[curSem] || SEMESTERS_DATA['2s2026']; }
 
 
 // ── STATE ─────────────────────────────────────────────────
-let curSem = '2s2026';
+let curSem = '1s2027alt';
 let curYear = 1;
 let placed = {};   // key → {id, d, s, e}
 let uid = 0;
@@ -1467,7 +1485,7 @@ document.getElementById('yrsel').addEventListener('change', function() {
 document.getElementById('semsel').addEventListener('change', function() {
   curSem = this.value;
   localStorage.setItem('grade_sem', curSem);
-  const semLabels = {'1s2027':'— 1º Semestre 2027 (proposta v2)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+  const semLabels = {'1s2027':'— 1º Semestre 2027 (v2 – superada)','1s2027alt':'— 1º Semestre 2027 (v4 – final)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
   document.getElementById('sem-label').textContent = semLabels[curSem] || '';
   curYear = 1;
   document.getElementById('yrsel').value = 1;
@@ -1492,9 +1510,9 @@ if (localStorage.getItem('grade_data_version') !== DATA_VERSION) {
   Object.entries(DEFAULT_STATE).forEach(([k, v]) => localStorage.setItem(k, v));
   localStorage.setItem('grade_data_version', DATA_VERSION);
 }
-curSem = localStorage.getItem('grade_sem') || '2s2026';
+curSem = localStorage.getItem('grade_sem') || '1s2027alt';
 document.getElementById('semsel').value = curSem;
-const semLabels = {'1s2027':'— 1º Semestre 2027 (proposta v2)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
+const semLabels = {'1s2027':'— 1º Semestre 2027 (v2 – superada)','1s2027alt':'— 1º Semestre 2027 (v4 – final)','2s2026':'— 2º Semestre 2026','1s2026':'— 1º Semestre 2026'};
 document.getElementById('sem-label').textContent = semLabels[curSem] || '';
 const savedYear = parseInt(localStorage.getItem('grade_year') || '1');
 curYear = savedYear;
